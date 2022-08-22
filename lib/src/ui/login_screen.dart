@@ -10,18 +10,9 @@ class LoginScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Logo(screenHeight, screenWidth)],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [textIniciar(screenWidth)],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [TextIngresa(screenWidth)],
-          ),
+          Logo(screenHeight, screenWidth),
+          textIniciar(screenWidth),
+          TextIngresa(screenWidth),
         ],
       ),
     );
