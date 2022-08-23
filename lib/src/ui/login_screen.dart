@@ -13,7 +13,8 @@ class LoginScreen extends StatelessWidget {
           TextIniciar(screenWidth),
           TextIngresa(screenWidth),
           UserTextField(screenWidth),
-          PasswordTextField(screenWidth)
+          PasswordTextField(screenWidth),
+          IniciaButton(screenWidth)
         ],
       ),
     );
@@ -108,5 +109,24 @@ Widget PasswordTextField(double screenWidth) {
             color: Color(0xff414141),
           )),
     ),
+  );
+}
+
+Widget IniciaButton(double screenWidth) {
+  double fontSizeScaled = screenWidth * 0.04;
+  return Container(
+    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+    child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+            primary: Color(
+          0xffD6DD58,
+        )),
+        child: Text("Iniciar Sesión",
+            style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: fontSizeScaled,
+                fontFamily: 'Poppins',
+                color: Color(0xff414141)))),
   );
 }
