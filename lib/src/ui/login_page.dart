@@ -125,7 +125,7 @@ Widget IniciaButton(BuildContext context) {
           Navigator.push(
               context,
               PageRouteBuilder(
-                  transitionDuration: Duration(seconds: 1),
+                  transitionDuration: const Duration(seconds: 1),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                     const begin = Offset(1, 0);
@@ -144,7 +144,7 @@ Widget IniciaButton(BuildContext context) {
                     );
                   },
                   pageBuilder: ((context, animation, secondaryAnimation) {
-                    return MallsPage();
+                    return const MallsPage();
                   })));
         },
         style: ElevatedButton.styleFrom(
