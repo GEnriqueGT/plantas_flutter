@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: prefer_const_constructors
     return MaterialApp(
-      theme: new ThemeData(scaffoldBackgroundColor: Color(0xFFFFFFFF)),
+      theme: ThemeData(scaffoldBackgroundColor: const Color(0xFFFFFFFF)),
       debugShowCheckedModeBanner: false,
       home: const Scaffold(
         body: LoginPage(),

@@ -17,17 +17,15 @@ appBarLogo() {
             alignment: const Alignment(4, 0),
             onPressed: () {},
             icon: const Icon(Icons.notifications_none)),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.settings_outlined)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.settings_outlined))
       ],
-      toolbarHeight: 90,
+      toolbarHeight: 65,
       backgroundColor: const Color(0xff414141),
       elevation: 0.0,
-      leadingWidth: 500,
-      leading: Container(
-        margin: const EdgeInsets.only(left: 20),
-        child: Image.asset(
-          "assets/images/logo_appbar.png",
-        ),
+      automaticallyImplyLeading: false,
+      title: Image.asset(
+        "assets/images/logo_appbar.png",
+        scale: 1.7,
       ),
     ),
   );
