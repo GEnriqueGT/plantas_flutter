@@ -10,20 +10,19 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          Logo(screenHeight, screenWidth),
-          TextIniciar(screenWidth),
-          TextIngresa(screenWidth),
-          UserTextField(screenWidth),
-          PasswordTextField(screenWidth),
-          IniciaButton(context)
+          logo(screenHeight, screenWidth),
+          textIniciar(screenWidth),
+          textIngresa(screenWidth),
+          userTextField(screenWidth),
+          passwordTextField(screenWidth),
+          iniciaButton(context)
         ],
       ),
     );
   }
 }
 
-// ignore: non_constant_identifier_names
-Widget Logo(double screenHeight, double screenWidth) {
+Widget logo(double screenHeight, double screenWidth) {
   return Container(
     height: screenHeight * 0.42,
     width: screenWidth,
@@ -34,8 +33,7 @@ Widget Logo(double screenHeight, double screenWidth) {
   );
 }
 
-// ignore: non_constant_identifier_names
-Widget TextIniciar(double screenWidth) {
+Widget textIniciar(double screenWidth) {
   double fontSizeScaled = screenWidth * 0.055;
   return Padding(
     padding: const EdgeInsets.fromLTRB(20.0, 20.0, 0, 0),
@@ -50,7 +48,7 @@ Widget TextIniciar(double screenWidth) {
 }
 
 // ignore: non_constant_identifier_names
-Widget TextIngresa(double screenWidth) {
+Widget textIngresa(double screenWidth) {
   double fontSizeScaled = screenWidth * 0.04;
   return Padding(
     padding: const EdgeInsets.fromLTRB(20.0, 5.0, 0, 0),
@@ -64,8 +62,7 @@ Widget TextIngresa(double screenWidth) {
   );
 }
 
-// ignore: non_constant_identifier_names
-Widget UserTextField(double screenWidth) {
+Widget userTextField(double screenWidth) {
   double fontSizeScaled = screenWidth * 0.03;
   return Container(
     margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
@@ -89,8 +86,7 @@ Widget UserTextField(double screenWidth) {
   );
 }
 
-// ignore: non_constant_identifier_names
-Widget PasswordTextField(double screenWidth) {
+Widget passwordTextField(double screenWidth) {
   double fontSizeScaled = screenWidth * 0.03;
   return Container(
     margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -114,8 +110,7 @@ Widget PasswordTextField(double screenWidth) {
   );
 }
 
-// ignore: non_constant_identifier_names
-Widget IniciaButton(BuildContext context) {
+Widget iniciaButton(BuildContext context) {
   double screenWidth = MediaQuery.of(context).size.width;
   double fontSizeScaled = screenWidth * 0.04;
   return Container(
