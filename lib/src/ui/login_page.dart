@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:plantas/src/ui/malls_page.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -14,7 +15,7 @@ class LoginScreen extends StatelessWidget {
           TextIngresa(screenWidth),
           UserTextField(screenWidth),
           PasswordTextField(screenWidth),
-          IniciaButton(screenWidth)
+          IniciaButton(context)
         ],
       ),
     );
@@ -33,6 +34,7 @@ Widget Logo(double screenHeight, double screenWidth) {
   );
 }
 
+// ignore: non_constant_identifier_names
 Widget TextIniciar(double screenWidth) {
   double fontSizeScaled = screenWidth * 0.055;
   return Padding(
@@ -112,14 +114,19 @@ Widget PasswordTextField(double screenWidth) {
   );
 }
 
-Widget IniciaButton(double screenWidth) {
+// ignore: non_constant_identifier_names
+Widget IniciaButton(BuildContext context) {
+  double screenWidth = MediaQuery.of(context).size.width;
   double fontSizeScaled = screenWidth * 0.04;
   return Container(
-    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
     child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const MallsPage()));
+        },
         style: ElevatedButton.styleFrom(
-            primary: Color(
+            primary: const Color(
           0xffD6DD58,
         )),
         child: Text("Iniciar Sesión",
@@ -127,6 +134,6 @@ Widget IniciaButton(double screenWidth) {
                 fontWeight: FontWeight.w700,
                 fontSize: fontSizeScaled,
                 fontFamily: 'Poppins',
-                color: Color(0xff414141)))),
+                color: const Color(0xff414141)))),
   );
 }

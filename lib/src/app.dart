@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plantas/src/ui/login_screen.dart';
+import 'package:plantas/src/ui/login_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(scaffoldBackgroundColor: Color(0xFFFFFFFF)),
       debugShowCheckedModeBanner: false,
       home: const Scaffold(
-        body: LoginScreen(),
+        body: LoginPage(),
       ),
     );
   }
