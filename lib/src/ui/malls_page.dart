@@ -10,18 +10,19 @@ class MallsPage extends StatelessWidget {
       preferredSize: Size.fromHeight(80),
       child: AppBar(
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_none)),
+          IconButton(
+              alignment: Alignment(4, 0),
+              onPressed: () {},
+              icon: Icon(Icons.notifications_none)),
           IconButton(onPressed: () {}, icon: Icon(Icons.settings_outlined))
         ],
         toolbarHeight: 80,
         backgroundColor: Color(0xff414141),
         elevation: 0.0,
         leadingWidth: 300,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: Image.asset(
-            "assets/images/logo_appbar.png",
-          ),
+        leading: Image.asset(
+          "assets/images/logo_appbar.png",
+          height: 100,
         ),
       ),
     ));

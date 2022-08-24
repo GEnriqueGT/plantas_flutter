@@ -122,8 +122,30 @@ Widget IniciaButton(BuildContext context) {
     padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
     child: ElevatedButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const MallsPage()));
+          Navigator.push(
+              context,
+              PageRouteBuilder(
+                  transitionDuration: Duration(seconds: 1),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    const begin = Offset(1, 0);
+                    const end = Offset.zero;
+                    const curve = Curves.ease;
+
+                    final tween = Tween(begin: begin, end: end);
+                    final curvedAnimation = CurvedAnimation(
+                      parent: animation,
+                      curve: curve,
+                    );
+
+                    return SlideTransition(
+                      position: tween.animate(curvedAnimation),
+                      child: child,
+                    );
+                  },
+                  pageBuilder: ((context, animation, secondaryAnimation) {
+                    return MallsPage();
+                  })));
         },
         style: ElevatedButton.styleFrom(
             primary: const Color(
