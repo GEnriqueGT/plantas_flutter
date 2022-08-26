@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:plantas/src/models/planta_model.dart';
 
@@ -28,27 +30,33 @@ class _MallsPageState extends State<MallsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarLogo(),
-      body: mallsList(plantas),
+      body: mallsList(plantas, context),
     );
   }
 }
 
-Widget mallsList(List<Planta> plantas) {
+Widget mallsList(List<Planta> plantas, context) {
   return ListView(
+      padding: EdgeInsets.only(top: 30),
       children: plantas.map((planta) {
-    return Container(
-      child: ExpansionTile(
-        title: Text(
-          planta.mall,
-          style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontFamily: 'Poppins',
-              color: Color(0xff414141)),
-        ),
-        children: getDatosTiles(planta.contents),
-      ),
-    );
-  }).toList());
+        return Container(
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              title: Text(
+                planta.mall,
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                    fontFamily: 'Poppins',
+                    color: Color(0xff414141)),
+              ),
+              children: getDatosTiles(planta.contents),
+            ),
+          ),
+        );
+      }).toList());
 }
 
 getDatosTiles(List<Datos> datos) {
@@ -56,19 +64,39 @@ getDatosTiles(List<Datos> datos) {
 
   for (int i = 0; i < datos.length; i++) {
     listTiles.add(Container(
-      decoration: BoxDecoration(
-          borderRadius: new BorderRadius.all(Radius.circular(5.0))),
+      decoration:
+          BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.0))),
       child: ListTile(
+        dense: true,
+        visualDensity: VisualDensity(vertical: -3),
         title: Text(datos[i].letra,
-            style:
-                TextStyle(fontWeight: FontWeight.w400, fontFamily: 'Poppins')),
+            style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontFamily: 'Poppins',
+                fontSize: 15)),
         trailing: Text(datos[i].dato.toString(),
-            style:
-                TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Poppins')),
-        tileColor: (i % 2 == 0) ? Color(0xffFBFCEE) : null,
+            style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Poppins',
+                color: Color(0xff9AA121),
+                fontSize: 15)),
+        tileColor: (i % 2 == 0) ? const Color(0xffFBFCEE) : null,
       ),
     ));
   }
+
+  listTiles.add(ListTile(
+    title: Center(
+      child: TextButton(
+          onPressed: () {},
+          child: Text("Ver detalles",
+              style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Poppins',
+                  color: Color(0xff9AA121),
+                  fontSize: 15))),
+    ),
+  ));
   return listTiles;
 }
 
