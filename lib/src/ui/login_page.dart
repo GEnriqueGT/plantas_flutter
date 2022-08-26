@@ -96,6 +96,7 @@ Widget passwordTextField(double screenWidth) {
     child: TextFormField(
       enableSuggestions: false,
       autocorrect: false,
+      obscureText: true,
       style: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: fontSizeScaled,
