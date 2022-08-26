@@ -94,6 +94,8 @@ Widget passwordTextField(double screenWidth) {
     decoration: BoxDecoration(
         color: const Color(0xFFF5F5F5), borderRadius: BorderRadius.circular(5)),
     child: TextFormField(
+      enableSuggestions: false,
+      autocorrect: false,
       style: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: fontSizeScaled,
@@ -139,13 +141,14 @@ Widget iniciaButton(BuildContext context) {
                     );
                   },
                   pageBuilder: ((context, animation, secondaryAnimation) {
-                    return const MallsPage();
+                    return MallsPage();
                   })));
         },
         style: ElevatedButton.styleFrom(
+            elevation: 0.0,
             primary: const Color(
-          0xffD6DD58,
-        )),
+              0xffD6DD58,
+            )),
         child: Text("Iniciar Sesión",
             style: TextStyle(
                 fontWeight: FontWeight.w700,
