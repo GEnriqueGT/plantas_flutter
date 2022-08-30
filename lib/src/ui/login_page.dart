@@ -120,30 +120,31 @@ Widget iniciaButton(BuildContext context) {
     padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
     child: ElevatedButton(
         onPressed: () {
-          Navigator.push(
-              context,
-              PageRouteBuilder(
-                  transitionDuration: const Duration(seconds: 1),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(1, 0);
-                    const end = Offset.zero;
-                    const curve = Curves.ease;
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+                transitionDuration: const Duration(seconds: 1),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1, 0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
 
-                    final tween = Tween(begin: begin, end: end);
-                    final curvedAnimation = CurvedAnimation(
-                      parent: animation,
-                      curve: curve,
-                    );
+                  final tween = Tween(begin: begin, end: end);
+                  final curvedAnimation = CurvedAnimation(
+                    parent: animation,
+                    curve: curve,
+                  );
 
-                    return SlideTransition(
-                      position: tween.animate(curvedAnimation),
-                      child: child,
-                    );
-                  },
-                  pageBuilder: ((context, animation, secondaryAnimation) {
-                    return MallsPage();
-                  })));
+                  return SlideTransition(
+                    position: tween.animate(curvedAnimation),
+                    child: child,
+                  );
+                },
+                pageBuilder: ((context, animation, secondaryAnimation) {
+                  return MallsPage();
+                })),
+          );
         },
         style: ElevatedButton.styleFrom(
             elevation: 0.0,
