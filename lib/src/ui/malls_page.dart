@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:plantas/src/models/planta_model.dart';
+import 'package:plantas/src/ui/details_page.dart';
 
 List colors = [Color(0xffFBFCEE), null];
 
@@ -52,14 +53,14 @@ Widget mallsList(List<Planta> plantas, context) {
                     fontFamily: 'Poppins',
                     color: Color(0xff414141)),
               ),
-              children: getDatosTiles(planta.contents),
+              children: getDatosTiles(planta.contents, context, planta.mall),
             ),
           ),
         );
       }).toList());
 }
 
-getDatosTiles(List<Datos> datos) {
+getDatosTiles(List<Datos> datos, BuildContext context, String mallName) {
   List<Widget> listTiles = [];
 
   for (int i = 0; i < datos.length; i++) {
@@ -88,9 +89,37 @@ getDatosTiles(List<Datos> datos) {
   listTiles.add(ListTile(
     title: Center(
       child: TextButton(
-          onPressed: () {},
-          child: Text("Ver detalles",
-              style: const TextStyle(
+          onPressed: () {
+            Navigator.push(
+                context,
+                PageRouteBuilder(
+                    transitionDuration: const Duration(seconds: 1),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(1, 0);
+                      const end = Offset.zero;
+                      const curve = Curves.ease;
+
+                      final tween = Tween(begin: begin, end: end);
+                      final curvedAnimation = CurvedAnimation(
+                        parent: animation,
+                        curve: curve,
+                      );
+
+                      return SlideTransition(
+                        position: tween.animate(curvedAnimation),
+                        child: child,
+                      );
+                    },
+                    pageBuilder: ((context, animation, secondaryAnimation) {
+                      return DetailsPage(
+                        listTiles: listTiles,
+                        mallName: mallName,
+                      );
+                    })));
+          },
+          child: const Text("Ver detalles",
+              style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Poppins',
                   color: Color(0xff9AA121),
