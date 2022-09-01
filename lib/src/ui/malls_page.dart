@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:plantas/src/models/planta_model.dart';
 import 'package:plantas/src/ui/details_page.dart';
