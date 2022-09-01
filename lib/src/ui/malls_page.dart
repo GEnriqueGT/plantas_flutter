@@ -1,6 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:plantas/src/models/planta_model.dart';
 import 'package:plantas/src/ui/details_page.dart';
+import 'dart:async';
+
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 List colors = [Color(0xffFBFCEE), null];
 
@@ -12,19 +18,32 @@ class MallsPage extends StatefulWidget {
 }
 
 class _MallsPageState extends State<MallsPage> {
-  List<Planta> plantas = [
-    Planta(mall: "Pradera Concepción", contents: [
-      Datos(letra: 'Q', dato: 3),
-      Datos(letra: 'pH', dato: 7),
-      Datos(letra: 'SSLM', dato: 15),
-    ]),
-    Planta(
-        mall: "Pradera Zacapa",
-        contents: [Datos(letra: 'Q', dato: 3), Datos(letra: 'pH', dato: 7)]),
-    Planta(
-        mall: "Pradera Huehuetenango",
-        contents: [Datos(letra: 'Q', dato: 3), Datos(letra: 'pH', dato: 7)])
-  ];
+  var plantas = List<Planta>.empty();
+
+  _getPlantas() {
+    API.getPlantas().then((response) {
+      setState(() {
+        if (response.statusCode == 200) {
+          final json = jsonDecode(response.body);
+          log(json.toString());
+        } else {
+          // If the server did not return a 200 OK response,
+          // then throw an exception.
+          throw Exception('Falló la carga de datos');
+        }
+      });
+    });
+  }
+
+  initState() {
+    super.initState();
+    _getPlantas();
+  }
+
+  dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,4 +168,11 @@ appBarLogo() {
       ),
     ),
   );
+}
+
+class API {
+  static Future getPlantas() {
+    var url = "http://192.168.1.9:3000/api/plantas";
+    return http.get(Uri.parse(url));
+  }
 }
