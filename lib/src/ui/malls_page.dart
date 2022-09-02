@@ -18,14 +18,27 @@ class MallsPage extends StatefulWidget {
 }
 
 class _MallsPageState extends State<MallsPage> {
-  var plantas = List<Planta>.empty();
+  var plantas = List<Planta>.empty(growable: true);
 
   _getPlantas() {
     API.getPlantas().then((response) {
       setState(() {
         if (response.statusCode == 200) {
-          final json = jsonDecode(response.body);
-          log(json.toString());
+          Map<String, dynamic> map = jsonDecode(response.body);
+
+          List<dynamic> data = map["plantas"];
+
+          for (int i = 0; i < data.length; i++) {
+            List<Datos> contentsMall = [];
+
+            for (int j = 0; j < data[i]["contents"].length; j++) {
+              contentsMall.add(Datos(
+                  letra: data[i]["contents"][j]["letra"],
+                  dato: data[i]["contents"][j]["dato"]));
+            }
+
+            plantas.add(Planta(mall: data[i]["mall"], contents: contentsMall));
+          }
         } else {
           // If the server did not return a 200 OK response,
           // then throw an exception.
@@ -54,27 +67,36 @@ class _MallsPageState extends State<MallsPage> {
 }
 
 Widget mallsList(List<Planta> plantas, context) {
-  return ListView(
-      padding: const EdgeInsets.only(top: 30),
-      children: plantas.map((planta) {
-        return Container(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: Theme(
-            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-            child: ExpansionTile(
-              title: Text(
-                planta.mall,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
-                    fontFamily: 'Poppins',
-                    color: Color(0xff414141)),
+  if (plantas.isEmpty) {
+    return Center(
+        child: Text("No cuenta con Plantas",
+            style: TextStyle(
+                fontFamily: 'poppins',
+                color: Color.fromARGB(255, 147, 147, 147))));
+  } else {
+    return ListView(
+        padding: const EdgeInsets.only(top: 30),
+        children: plantas.map((planta) {
+          return Container(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Theme(
+              data:
+                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                title: Text(
+                  planta.mall,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                      fontFamily: 'Poppins',
+                      color: Color(0xff414141)),
+                ),
+                children: getDatosTiles(planta.contents, context, planta.mall),
               ),
-              children: getDatosTiles(planta.contents, context, planta.mall),
             ),
-          ),
-        );
-      }).toList());
+          );
+        }).toList());
+  }
 }
 
 getDatosTiles(List<Datos> datos, BuildContext context, String mallName) {

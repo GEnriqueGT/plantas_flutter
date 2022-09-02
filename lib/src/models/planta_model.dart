@@ -4,10 +4,7 @@ class Planta {
   Planta({required this.mall, required this.contents});
 
   factory Planta.fromJson(Map<String, dynamic> json) {
-    return Planta(
-      mall: json['mall'],
-      contents: json['contents'],
-    );
+    return Planta(mall: json['mall'], contents: json['contents']);
   }
 }
 
