@@ -17,10 +17,19 @@ class DetailsPage extends StatelessWidget {
         Column(children: getTiles(listTiles, context)),
         sectionText("Detalles"),
         detallesCards(),
+        SizedBox(
+          height: 200,
+        )
       ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 40),
+        child: FloatingActionButton(
+          elevation: 0,
+          onPressed: () {},
+          child: IconTheme(
+              data: IconThemeData(color: Colors.black), child: Icon(Icons.add)),
+          backgroundColor: Color(0xffD6DD58),
+        ),
       ),
     );
   }
@@ -95,8 +104,21 @@ detallesCards() {
             color: Colors.white,
             child: Center(
                 child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("lorem ipsum"),
+                Image.asset("assets/images/aeration.png", scale: 1.7),
+                Text("AERATION",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                      fontFamily: 'Poppins',
+                    )),
+                Text("SS = 250 g/L",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12,
+                      fontFamily: 'Poppins',
+                    )),
               ],
             )),
           ),
@@ -109,8 +131,38 @@ detallesCards() {
             color: Colors.white,
             child: Center(
                 child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("lorem ipsum"),
+                Image.asset("assets/images/influent.png", scale: 1.7),
+                Text("INFLUENT",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                      fontFamily: 'Poppins',
+                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("Q = 90 L/min",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          fontFamily: 'Poppins',
+                        )),
+                    Text("pH = 7",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          fontFamily: 'Poppins',
+                        )),
+                    Text("NT = 45",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          fontFamily: 'Poppins',
+                        ))
+                  ],
+                ),
               ],
             )),
           ),
