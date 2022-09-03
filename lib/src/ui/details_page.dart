@@ -9,8 +9,20 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBarLogo(context),
-        body: ListView(children: getTiles(listTiles, mallName, context)));
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      appBar: appBarLogo(context),
+      body: ListView(children: [
+        plantaText(context, mallName),
+        sectionText("Resumen"),
+        Column(children: getTiles(listTiles, context)),
+        sectionText("Detalles"),
+        detallesCards(),
+      ]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
+    );
   }
 }
 
@@ -58,40 +70,8 @@ appBarLogo(BuildContext context) {
   );
 }
 
-getTiles(List<Widget> listTiles, String mallName, BuildContext context) {
-  List<Widget> listTilesNew = [
-    Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.grey),
-      child: ExpansionTile(
-        title: Text(
-          "C.C. $mallName",
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 21,
-            fontFamily: 'Poppins',
-          ),
-        ),
-        subtitle: Text("Planta de Tratamiento 1",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-              fontFamily: 'Poppins',
-            )),
-      ),
-    ),
-    SizedBox(
-      height: 10,
-    ),
-    Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 0, 15),
-      child: Text("Resumen",
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 21,
-            fontFamily: 'Poppins',
-          )),
-    )
-  ];
+getTiles(List<Widget> listTiles, BuildContext context) {
+  List<Widget> listTilesNew = [];
 
   for (int i = 0; i < listTiles.length - 1; i++) {
     listTilesNew.add(Container(
@@ -99,4 +79,77 @@ getTiles(List<Widget> listTiles, String mallName, BuildContext context) {
   }
 
   return listTilesNew;
+}
+
+detallesCards() {
+  return Container(
+    height: 200,
+    child: ListView(
+      scrollDirection: Axis.horizontal,
+      children: [
+        Container(
+          width: 340,
+          margin: EdgeInsets.only(left: 20),
+          child: Card(
+            elevation: 16,
+            color: Colors.white,
+            child: Center(
+                child: Column(
+              children: [
+                Text("lorem ipsum"),
+              ],
+            )),
+          ),
+        ),
+        Container(
+          width: 340,
+          margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Card(
+            elevation: 16,
+            color: Colors.white,
+            child: Center(
+                child: Column(
+              children: [
+                Text("lorem ipsum"),
+              ],
+            )),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+plantaText(BuildContext context, String mallName) {
+  return Theme(
+    data: Theme.of(context).copyWith(dividerColor: Colors.grey),
+    child: ExpansionTile(
+      title: Text(
+        "C.C. $mallName",
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 21,
+          fontFamily: 'Poppins',
+        ),
+      ),
+      subtitle: Text("Planta de Tratamiento 1",
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+            fontFamily: 'Poppins',
+          )),
+    ),
+  );
+}
+
+sectionText(String texto) {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(20, 20, 0, 15),
+    child: Text("$texto",
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 20,
+          fontFamily: 'Poppins',
+        )),
+  );
 }
