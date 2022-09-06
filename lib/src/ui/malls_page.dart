@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:plantas/src/models/planta_model.dart';
 import 'package:plantas/src/ui/details_page.dart';
@@ -40,8 +38,6 @@ class _MallsPageState extends State<MallsPage> {
             plantas.add(Planta(mall: data[i]["mall"], contents: contentsMall));
           }
         } else {
-          // If the server did not return a 200 OK response,
-          // then throw an exception.
           throw Exception('Falló la carga de datos');
         }
       });

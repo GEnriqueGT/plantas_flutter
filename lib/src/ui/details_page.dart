@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plantas/src/ui/malls_page.dart';
+import 'package:plantas/src/ui/register_page.dart';
 
 class DetailsPage extends StatelessWidget {
   final List<Widget> listTiles;
@@ -25,7 +26,33 @@ class DetailsPage extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 40),
         child: FloatingActionButton(
           elevation: 0,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                  transitionDuration: const Duration(seconds: 1),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    const begin = Offset(1, 0);
+                    const end = Offset.zero;
+                    const curve = Curves.ease;
+
+                    final tween = Tween(begin: begin, end: end);
+                    final curvedAnimation = CurvedAnimation(
+                      parent: animation,
+                      curve: curve,
+                    );
+
+                    return SlideTransition(
+                      position: tween.animate(curvedAnimation),
+                      child: child,
+                    );
+                  },
+                  pageBuilder: ((context, animation, secondaryAnimation) {
+                    return RegisterParametersPage();
+                  })),
+            );
+          },
           child: IconTheme(
               data: IconThemeData(color: Colors.black), child: Icon(Icons.add)),
           backgroundColor: Color(0xffD6DD58),
