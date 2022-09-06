@@ -49,7 +49,9 @@ class DetailsPage extends StatelessWidget {
                     );
                   },
                   pageBuilder: ((context, animation, secondaryAnimation) {
-                    return RegisterParametersPage();
+                    return RegisterParametersPage(
+                      mallName: mallName,
+                    );
                   })),
             );
           },

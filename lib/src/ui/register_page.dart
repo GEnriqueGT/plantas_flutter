@@ -6,7 +6,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:plantas/src/ui/malls_page.dart';
 
 class RegisterParametersPage extends StatefulWidget {
-  RegisterParametersPage({Key? key}) : super(key: key);
+  final String mallName;
+  RegisterParametersPage({Key? key, required this.mallName}) : super(key: key);
 
   @override
   RregisterParametersPageState createState() => RregisterParametersPageState();
@@ -18,7 +19,7 @@ class RregisterParametersPageState extends State<RegisterParametersPage> {
     return Scaffold(
       appBar: appBarLogo(context),
       body: ListView(
-        children: [titulo(context), Formulario(context)],
+        children: [titulo(context, widget.mallName), Formulario(context)],
       ),
     );
   }
@@ -39,7 +40,7 @@ appBarLogo(BuildContext context) {
   );
 }
 
-Widget titulo(BuildContext context) {
+Widget titulo(BuildContext context, mallName) {
   initializeDateFormatting();
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +71,7 @@ Widget titulo(BuildContext context) {
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
                 child: Text(
-                  "C.C. Pradera",
+                  "C.C. $mallName",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
