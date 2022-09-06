@@ -115,7 +115,7 @@ Widget passwordTextField(double screenWidth) {
 
 Widget iniciaButton(BuildContext context) {
   double screenWidth = MediaQuery.of(context).size.width;
-  double fontSizeScaled = screenWidth * 0.04;
+  double fontSizeScaled = screenWidth * 0.035;
   return Container(
     padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
     child: ElevatedButton(
