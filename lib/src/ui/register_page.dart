@@ -14,13 +14,64 @@ class RegisterParametersPage extends StatefulWidget {
 }
 
 class RregisterParametersPageState extends State<RegisterParametersPage> {
+  int pagina = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarLogo(context),
       body: ListView(
-        children: [titulo(context, widget.mallName), Formulario(context)],
+        children: [
+          titulo(context, widget.mallName),
+          Formulario(context),
+        ],
       ),
+    );
+  }
+
+  Widget Formulario(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        selection(pagina, context),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+          child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  pagina++;
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                  elevation: 0.0,
+                  primary: const Color(
+                    0xffD6DD58,
+                  )),
+              child: Text("Continuar",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      fontFamily: 'Poppins',
+                      color: const Color(0xff414141)))),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+          child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                  elevation: 0.0,
+                  primary: const Color(
+                    0xff414141,
+                  )),
+              child: Text("Terminar registro",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      fontFamily: 'Poppins',
+                      color: Colors.white))),
+        )
+      ],
     );
   }
 }
@@ -100,48 +151,12 @@ Widget titulo(BuildContext context, mallName) {
   );
 }
 
-Widget Formulario(BuildContext context) {
-  int pagina = 0;
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      operativosForm(context),
-      Container(
-        width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                elevation: 0.0,
-                primary: const Color(
-                  0xffD6DD58,
-                )),
-            child: Text("Continuar",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                    fontFamily: 'Poppins',
-                    color: const Color(0xff414141)))),
-      ),
-      Container(
-        width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-        child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                elevation: 0.0,
-                primary: const Color(
-                  0xff414141,
-                )),
-            child: Text("Terminar registro",
-                style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15,
-                    fontFamily: 'Poppins',
-                    color: Colors.white))),
-      )
-    ],
-  );
+selection(int pagina, BuildContext context) {
+  if (pagina == 0) {
+    return operativosForm(context);
+  } else {
+    return Container();
+  }
 }
 
 Widget operativosForm(BuildContext context) {
