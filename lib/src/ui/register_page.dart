@@ -33,32 +33,14 @@ class RregisterParametersPageState extends State<RegisterParametersPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         selection(pagina, context),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-          child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  pagina++;
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                  elevation: 0.0,
-                  primary: const Color(
-                    0xffD6DD58,
-                  )),
-              child: Text("Continuar",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                      fontFamily: 'Poppins',
-                      color: const Color(0xff414141)))),
-        ),
+        continueButton(),
         Container(
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               style: ElevatedButton.styleFrom(
                   elevation: 0.0,
                   primary: const Color(
@@ -73,6 +55,34 @@ class RregisterParametersPageState extends State<RegisterParametersPage> {
         )
       ],
     );
+  }
+
+  continueButton() {
+    if (pagina != 2) {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        child: ElevatedButton(
+            onPressed: () {
+              setState(() {
+                pagina++;
+              });
+            },
+            style: ElevatedButton.styleFrom(
+                elevation: 0.0,
+                primary: const Color(
+                  0xffD6DD58,
+                )),
+            child: Text("Continuar",
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    fontFamily: 'Poppins',
+                    color: const Color(0xff414141)))),
+      );
+    } else {
+      return SizedBox();
+    }
   }
 }
 
@@ -152,10 +162,19 @@ Widget titulo(BuildContext context, mallName) {
 }
 
 selection(int pagina, BuildContext context) {
-  if (pagina == 0) {
-    return operativosForm(context);
-  } else {
-    return Container();
+  switch (pagina) {
+    case 0:
+      return operativosForm(context);
+      break;
+
+    case 1:
+      return CalidadForm(context);
+      break;
+    case 2:
+      return nirogenoForm(context);
+      break;
+    default:
+      return Navigator.pop(context);
   }
 }
 
@@ -215,6 +234,151 @@ Widget operativosForm(BuildContext context) {
       campo("pH"),
       campo("SSED", "[mg/L]"),
       campo("Cloro libre", "[mg/L]")
+    ],
+  );
+}
+
+Widget CalidadForm(BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.check_circle,
+              size: 16,
+              color: Color(0xffD6DD58),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                "Operativos",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    fontFamily: 'Poppins',
+                    color: Color(0xffA1A1A1)),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Icon(
+                Icons.circle_outlined,
+                size: 16,
+                color: Color(0xffD6DD58),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                "Calidad",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Text(
+                "Nitrógeno",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    fontFamily: 'Poppins',
+                    color: Color(0xffA1A1A1)),
+              ),
+            ),
+          ],
+        ),
+      ),
+      campo("CAUDAL", "[mg/L]"),
+      campo("DBO", "[mg/L]"),
+      campo("DQO", "[mg/L]"),
+      campo("SST", "[mg/L]"),
+      campo("pH", "[mg/L]"),
+      campo("T", "[mg/L]"),
+      campo("GyA", "[mg/L]"),
+      campo("P", "[mg/L]"),
+    ],
+  );
+}
+
+Widget nirogenoForm(BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.check_circle,
+              size: 16,
+              color: Color(0xffD6DD58),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                "Operativos",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    fontFamily: 'Poppins',
+                    color: Color(0xffA1A1A1)),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Icon(
+                Icons.check_circle,
+                size: 16,
+                color: Color(0xffD6DD58),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                "Calidad",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    fontFamily: 'Poppins',
+                    color: Color(0xffA1A1A1)),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Icon(
+                Icons.circle_outlined,
+                size: 16,
+                color: Color(0xffD6DD58),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                "Nitrógeno",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      campo("NT", "[mg/L]"),
+      campo("NH4", "[mg/L]"),
+      campo("NO3", "[mg/L]"),
+      campo("NO2", "[mg/L]"),
+      campo("NKT", "[mg/L]")
     ],
   );
 }
