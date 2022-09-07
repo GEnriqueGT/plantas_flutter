@@ -170,11 +170,32 @@ appBarLogo() {
     preferredSize: const Size.fromHeight(65),
     child: AppBar(
       actions: <Widget>[
-        IconButton(
-            alignment: const Alignment(4, 0),
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none)),
-        IconButton(onPressed: () {}, icon: const Icon(Icons.settings_outlined))
+        Row(
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 15),
+              child: IconButton(
+                  constraints: BoxConstraints(),
+                  padding: EdgeInsets.zero,
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.notifications_none,
+                    size: 27,
+                  )),
+            ),
+            Container(
+              margin: EdgeInsets.only(right: 20),
+              child: IconButton(
+                  constraints: BoxConstraints(),
+                  padding: EdgeInsets.zero,
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.settings_outlined,
+                    size: 25,
+                  )),
+            )
+          ],
+        ),
       ],
       toolbarHeight: 65,
       backgroundColor: const Color(0xff414141),
