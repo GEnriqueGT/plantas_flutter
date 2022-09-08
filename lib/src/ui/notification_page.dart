@@ -18,13 +18,34 @@ class _NotificationPageState extends State<NotificationPage> {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 0, 15),
+            padding: const EdgeInsets.fromLTRB(20, 20, 0, 25),
             child: Text("Configuración",
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 20,
                   fontFamily: 'Poppins',
                 )),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Icon(
+                    Icons.settings_outlined,
+                    color: Color(0xff858585),
+                    size: 23,
+                  ),
+                ),
+                Text("Notificaciones",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 17,
+                        fontFamily: 'Poppins',
+                        color: Color(0xff858585))),
+              ],
+            ),
           ),
           mallsList(widget.plantas, context)
         ],
@@ -102,7 +123,7 @@ Widget mallsList(List<Planta> plantas, context) {
                     fontFamily: 'Poppins',
                     color: Color(0xff414141)),
               ),
-              children: getDatosTiles(planta.contents),
+              children: getDatosTiles(planta.contents, context),
             ),
           ),
         ),
@@ -111,7 +132,7 @@ Widget mallsList(List<Planta> plantas, context) {
   }
 }
 
-getDatosTiles(List<Datos> datos) {
+getDatosTiles(List<Datos> datos, BuildContext context) {
   List<Widget> listTiles = [];
 
   for (int i = 0; i < datos.length; i++) {
@@ -134,7 +155,144 @@ getDatosTiles(List<Datos> datos) {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               alignment: Alignment.center,
             ),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (context) {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30.0))),
+                    insetPadding: EdgeInsets.zero,
+                    contentPadding: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    content: Builder(
+                      builder: (context) {
+                        var height = MediaQuery.of(context).size.height;
+                        var width = MediaQuery.of(context).size.width;
+
+                        return Container(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 20),
+                                  child: Text("Configuración",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 20,
+                                        fontFamily: 'Poppins',
+                                      )),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 40),
+                                  child: Text(datos[i].letra,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 17,
+                                        fontFamily: 'Poppins',
+                                      )),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(top: 20, bottom: 10),
+                                  width: width - 100,
+                                  child: Text(
+                                    "Tipo",
+                                    style: TextStyle(
+                                        fontSize: 14, color: Color(0xff828282)),
+                                  ),
+                                ),
+                                Container(
+                                  width: width - 100,
+                                  height: 40,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xFFF5F5F5),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: TextFormField(
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 15,
+                                            fontFamily: 'Poppins'),
+                                        decoration: InputDecoration(
+                                            hintText: "Ej. <, >, =, <>,  ≤ ",
+                                            hintStyle: TextStyle(
+                                              color: Color(0xff8A888C),
+                                            ),
+                                            contentPadding: EdgeInsets.only(
+                                                top: 4.5, left: 14),
+                                            border: InputBorder.none,
+                                            suffixIcon: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0, right: 15),
+                                            )),
+                                      )),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(top: 20, bottom: 10),
+                                  width: width - 100,
+                                  child: Text(
+                                    "Valor",
+                                    style: TextStyle(
+                                        fontSize: 14, color: Color(0xff828282)),
+                                  ),
+                                ),
+                                Container(
+                                  width: width - 100,
+                                  height: 40,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xFFF5F5F5),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: TextFormField(
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 15,
+                                            fontFamily: 'Poppins'),
+                                        decoration: InputDecoration(
+                                            hintText: "Ej. 10, 20, 100, etc...",
+                                            hintStyle: TextStyle(
+                                              color: Color(0xff8A888C),
+                                            ),
+                                            contentPadding: EdgeInsets.only(
+                                                top: 4.5, left: 14),
+                                            border: InputBorder.none,
+                                            suffixIcon: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0, right: 15),
+                                            )),
+                                      )),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(top: 30),
+                                  width: width - 100,
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 0.0,
+                                          primary: const Color(
+                                            0xffD6DD58,
+                                          )),
+                                      child: Text("Guardar configuración",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14,
+                                              fontFamily: 'Poppins',
+                                              color: const Color(0xff414141)))),
+                                )
+                              ],
+                            ),
+                            height: height - 300,
+                            width: width - 50);
+                      },
+                    ),
+                  );
+                },
+              );
+            },
             child: Text("-",
                 style: const TextStyle(
                     fontWeight: FontWeight.w600,
