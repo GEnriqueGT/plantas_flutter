@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plantas/src/models/planta_model.dart';
 import 'package:plantas/src/ui/details_page.dart';
 import 'dart:async';
+import 'package:plantas/src/ui/notification_page.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -56,7 +57,7 @@ class _MallsPageState extends State<MallsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarLogo(),
+      appBar: appBarLogo(context, plantas),
       body: mallsList(plantas, context),
     );
   }
@@ -78,16 +79,20 @@ Widget mallsList(List<Planta> plantas, context) {
             child: Theme(
               data:
                   Theme.of(context).copyWith(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                title: Text(
-                  planta.mall,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 17,
-                      fontFamily: 'Poppins',
-                      color: Color(0xff414141)),
+              child: ListTileTheme(
+                contentPadding: EdgeInsets.all(0),
+                child: ExpansionTile(
+                  title: Text(
+                    planta.mall,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 17,
+                        fontFamily: 'Poppins',
+                        color: Color(0xff414141)),
+                  ),
+                  children:
+                      getDatosTiles(planta.contents, context, planta.mall),
                 ),
-                children: getDatosTiles(planta.contents, context, planta.mall),
               ),
             ),
           );
@@ -99,10 +104,10 @@ getDatosTiles(List<Datos> datos, BuildContext context, String mallName) {
   List<Widget> listTiles = [];
 
   for (int i = 0; i < datos.length; i++) {
-    listTiles.add(Container(
-      decoration:
-          BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5.0))),
+    listTiles.add(ListTileTheme(
+      contentPadding: EdgeInsets.only(left: 20, right: 20),
       child: ListTile(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         dense: true,
         visualDensity: VisualDensity(vertical: -3),
         title: Text(datos[i].letra,
@@ -165,7 +170,7 @@ getDatosTiles(List<Datos> datos, BuildContext context, String mallName) {
   return listTiles;
 }
 
-appBarLogo() {
+appBarLogo(BuildContext context, List<Planta> plantas) {
   return PreferredSize(
     preferredSize: const Size.fromHeight(65),
     child: AppBar(
@@ -188,7 +193,36 @@ appBarLogo() {
               child: IconButton(
                   constraints: BoxConstraints(),
                   padding: EdgeInsets.zero,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                          transitionDuration: const Duration(seconds: 1),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(1, 0);
+                            const end = Offset.zero;
+                            const curve = Curves.ease;
+
+                            final tween = Tween(begin: begin, end: end);
+                            final curvedAnimation = CurvedAnimation(
+                              parent: animation,
+                              curve: curve,
+                            );
+
+                            return SlideTransition(
+                              position: tween.animate(curvedAnimation),
+                              child: child,
+                            );
+                          },
+                          pageBuilder:
+                              ((context, animation, secondaryAnimation) {
+                            return NotificationPage(
+                              plantas: plantas,
+                            );
+                          })),
+                    );
+                  },
                   icon: const Icon(
                     Icons.settings_outlined,
                     size: 25,
