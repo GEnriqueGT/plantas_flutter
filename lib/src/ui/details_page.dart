@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:plantas/src/ui/malls_page.dart';
 import 'package:plantas/src/ui/register_page.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class DetailsPage extends StatelessWidget {
   final List<Widget> listTiles;
+
   final String mallName;
   DetailsPage({Key? key, required this.listTiles, required this.mallName})
       : super(key: key);
@@ -18,6 +20,9 @@ class DetailsPage extends StatelessWidget {
         Column(children: getTiles(listTiles, context)),
         sectionText("Detalles"),
         detallesCards(),
+        sectionRowFilter(),
+        chartsectionText("NT EN SALIDA"),
+        chart(),
         SizedBox(
           height: 200,
         )
@@ -232,5 +237,118 @@ sectionText(String texto) {
           fontSize: 20,
           fontFamily: 'Poppins',
         )),
+  );
+}
+
+chartsectionText(String texto) {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(35, 20, 0, 40),
+    child: Text("$texto",
+        style: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+            fontFamily: 'Poppins',
+            color: Color(0xff247FB2))),
+  );
+}
+
+Widget sectionRowFilter() {
+  return Padding(
+    padding: EdgeInsets.only(top: 40),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        sectionText("Gráficas"),
+        Container(
+          width: 130,
+          padding: const EdgeInsets.only(right: 20),
+          child: ElevatedButton(
+            onPressed: () {},
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Filtrar",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      fontFamily: 'Poppins',
+                      color: Color(0xff808080)),
+                ),
+                Icon(
+                  Icons.filter_alt_outlined,
+                  color: Color(0xff808080),
+                )
+              ],
+            ),
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+                elevation: 0,
+                primary: Color(0xffF5F5F5)),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+Widget chart() {
+  return Container(
+    padding: const EdgeInsets.only(right: 30),
+    width: double.infinity,
+    height: 180,
+    child: LineChart(
+      LineChartData(
+        minX: 0,
+        maxX: 18,
+        minY: 0,
+        maxY: 250,
+        borderData: FlBorderData(show: false),
+        gridData: FlGridData(
+          show: false,
+        ),
+        titlesData: FlTitlesData(
+          bottomTitles:
+              AxisTitles(sideTitles: SideTitles(showTitles: true, interval: 1)),
+          leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+            showTitles: true,
+            interval: 50,
+            reservedSize: 40,
+          )),
+          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        ),
+        lineBarsData: [
+          LineChartBarData(
+              color: Color(0xff58ADDD),
+              dotData: FlDotData(),
+              isCurved: true,
+              barWidth: 2,
+              belowBarData: BarAreaData(
+                  show: true,
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color.fromARGB(61, 88, 172, 221),
+                        Color(0x00EEEEF0)
+                      ])),
+              spots: [
+                FlSpot(0, 250),
+                FlSpot(3, 200),
+                FlSpot(5, 150),
+                FlSpot(10, 245),
+                FlSpot(12, 170),
+                FlSpot(15, 200),
+                FlSpot(17, 250),
+                FlSpot(18, 150)
+              ]),
+        ],
+      ),
+    ),
   );
 }

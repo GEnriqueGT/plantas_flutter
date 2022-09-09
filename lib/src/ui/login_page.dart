@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:plantas/src/ui/malls_page.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  LoginPage({Key? key}) : super(key: key);
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool _obscureText = true;
+
+  Icon _Icon = Icon(
+    Icons.visibility_off_outlined,
+    color: Color(0xff414141),
+  );
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -17,6 +30,55 @@ class LoginPage extends StatelessWidget {
           passwordTextField(screenWidth),
           iniciaButton(context)
         ],
+      ),
+    );
+  }
+
+  Widget passwordTextField(double screenWidth) {
+    double fontSizeScaled = screenWidth * 0.03;
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      padding: const EdgeInsets.only(left: 5),
+      decoration: BoxDecoration(
+          color: const Color(0xFFF5F5F5),
+          borderRadius: BorderRadius.circular(5)),
+      child: TextFormField(
+        enableSuggestions: false,
+        autocorrect: false,
+        obscureText: _obscureText,
+        style: TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: fontSizeScaled,
+            fontFamily: 'Poppins'),
+        decoration: InputDecoration(
+            suffixIcon: IconButton(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+
+                    if (_obscureText) {
+                      _Icon = Icon(
+                        Icons.visibility_off_outlined,
+                        color: Color(0xff414141),
+                      );
+                    } else {
+                      _Icon = Icon(
+                        Icons.visibility_outlined,
+                        color: Color(0xff414141),
+                      );
+                    }
+                  });
+                },
+                icon: _Icon),
+            contentPadding: EdgeInsets.only(top: 15.0),
+            border: InputBorder.none,
+            hintText: 'Contraseña',
+            prefixIcon: Icon(
+              Icons.lock_outline,
+              color: Color(0xff414141),
+            )),
       ),
     );
   }
@@ -80,33 +142,6 @@ Widget userTextField(double screenWidth) {
           hintText: 'Usuario',
           prefixIcon: Icon(
             Icons.person_outline,
-            color: Color(0xff414141),
-          )),
-    ),
-  );
-}
-
-Widget passwordTextField(double screenWidth) {
-  double fontSizeScaled = screenWidth * 0.03;
-  return Container(
-    margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-    padding: const EdgeInsets.only(left: 5),
-    decoration: BoxDecoration(
-        color: const Color(0xFFF5F5F5), borderRadius: BorderRadius.circular(5)),
-    child: TextFormField(
-      enableSuggestions: false,
-      autocorrect: false,
-      obscureText: true,
-      style: TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: fontSizeScaled,
-          fontFamily: 'Poppins'),
-      decoration: const InputDecoration(
-          contentPadding: EdgeInsets.only(top: 15.0),
-          border: InputBorder.none,
-          hintText: 'Contraseña',
-          prefixIcon: Icon(
-            Icons.lock_outline,
             color: Color(0xff414141),
           )),
     ),
