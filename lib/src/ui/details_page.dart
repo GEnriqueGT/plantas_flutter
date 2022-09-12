@@ -21,10 +21,12 @@ class DetailsPage extends StatelessWidget {
         sectionText("Detalles"),
         detallesCards(),
         sectionRowFilter(),
-        chartsectionText("NT EN SALIDA"),
-        chart(),
+        chartCaudal(),
+        chartNt(),
+        chartsSS(),
+        chartsDBO(),
         SizedBox(
-          height: 200,
+          height: 50,
         )
       ]),
       floatingActionButton: Padding(
@@ -207,23 +209,36 @@ detallesCards() {
 }
 
 plantaText(BuildContext context, String mallName) {
-  return Theme(
-    data: Theme.of(context).copyWith(dividerColor: Colors.grey),
-    child: ExpansionTile(
-      title: Text(
-        "C.C. $mallName",
-        style: TextStyle(
-          fontWeight: FontWeight.w600,
-          fontSize: 21,
-          fontFamily: 'Poppins',
+  return Container(
+    padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+    decoration: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(color: Color(0xffD7D7D7)),
+      ),
+    ),
+    child: Theme(
+      data: Theme.of(context)
+          .copyWith(dividerColor: Color.fromARGB(0, 158, 158, 158)),
+      child: ExpansionTile(
+        iconColor: Color(0xff9F9F9F),
+        title: Text(
+          "C.C. $mallName",
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 21,
+              fontFamily: 'Poppins',
+              color: Colors.black),
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 5.0),
+          child: Text("Planta de Tratamiento 1",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  fontFamily: 'Poppins',
+                  color: Color(0xff757575))),
         ),
       ),
-      subtitle: Text("Planta de Tratamiento 1",
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            fontFamily: 'Poppins',
-          )),
     ),
   );
 }
@@ -240,15 +255,15 @@ sectionText(String texto) {
   );
 }
 
-chartsectionText(String texto) {
+chartsectionText(String texto, Color color) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(35, 20, 0, 40),
     child: Text("$texto",
         style: TextStyle(
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
             fontSize: 20,
             fontFamily: 'Poppins',
-            color: Color(0xff247FB2))),
+            color: color)),
   );
 }
 
@@ -295,11 +310,36 @@ Widget sectionRowFilter() {
   );
 }
 
-Widget chart() {
+Widget bottomTitleWidgets(double value, TitleMeta meta) {
+  const style = TextStyle(
+    color: Color(0xff727272),
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+  );
+  return SideTitleWidget(
+    axisSide: meta.axisSide,
+    space: 0.24,
+    child: Text(meta.formattedValue, style: style),
+  );
+}
+
+Widget leftTitleWidgets(double value, TitleMeta meta) {
+  const style = TextStyle(
+    color: Color(0xff727272),
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+  );
+  return SideTitleWidget(
+    axisSide: meta.axisSide,
+    child: Text(meta.formattedValue, style: style),
+  );
+}
+
+Widget chart(Color lineColor, Color dotColor) {
   return Container(
-    padding: const EdgeInsets.only(right: 30),
+    padding: const EdgeInsets.only(right: 10),
     width: double.infinity,
-    height: 180,
+    height: 150,
     child: LineChart(
       LineChartData(
         minX: 0,
@@ -311,21 +351,29 @@ Widget chart() {
           show: false,
         ),
         titlesData: FlTitlesData(
-          bottomTitles:
-              AxisTitles(sideTitles: SideTitles(showTitles: true, interval: 1)),
+          bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                  showTitles: true,
+                  interval: 1,
+                  getTitlesWidget: bottomTitleWidgets)),
           leftTitles: AxisTitles(
               sideTitles: SideTitles(
-            showTitles: true,
-            interval: 50,
-            reservedSize: 40,
-          )),
+                  showTitles: true,
+                  interval: 50,
+                  reservedSize: 30,
+                  getTitlesWidget: leftTitleWidgets)),
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         ),
         lineBarsData: [
           LineChartBarData(
-              color: Color(0xff58ADDD),
-              dotData: FlDotData(),
+              color: lineColor,
+              dotData: FlDotData(
+                  show: true,
+                  getDotPainter: (spot, percent, barData, index) {
+                    return FlDotCirclePainter(
+                        radius: 4, color: dotColor, strokeWidth: 0);
+                  }),
               isCurved: true,
               barWidth: 2,
               belowBarData: BarAreaData(
@@ -334,8 +382,8 @@ Widget chart() {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Color.fromARGB(61, 88, 172, 221),
-                        Color(0x00EEEEF0)
+                        lineColor.withAlpha(65),
+                        Color.fromARGB(0, 255, 255, 255)
                       ])),
               spots: [
                 FlSpot(0, 250),
@@ -343,12 +391,52 @@ Widget chart() {
                 FlSpot(5, 150),
                 FlSpot(10, 245),
                 FlSpot(12, 170),
-                FlSpot(15, 200),
-                FlSpot(17, 250),
+                FlSpot(13, 200),
+                FlSpot(15.5, 250),
                 FlSpot(18, 150)
               ]),
         ],
       ),
     ),
+  );
+}
+
+Widget chartCaudal() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      chartsectionText("Caudal entrada Q", Color(0xffA6AE23)),
+      chart(Color(0xffD6DD58), Color(0xffA6AE23)),
+    ],
+  );
+}
+
+Widget chartNt() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      chartsectionText("NT EN SALIDA", Color(0xff247FB2)),
+      chart(Color(0xff58ADDD), Color(0xff247FB2)),
+    ],
+  );
+}
+
+Widget chartsSS() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      chartsectionText("SS EN SALIDA", Color(0xff6B24B2)),
+      chart(Color(0xffB584E6), Color(0xff6B24B2)),
+    ],
+  );
+}
+
+Widget chartsDBO() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      chartsectionText("DBO EN SALIDA", Color(0xff23AEA6)),
+      chart(Color(0xff62DFD8), Color(0xff23AEA6)),
+    ],
   );
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:plantas/src/ui/malls_page.dart';
 import 'package:plantas/src/models/planta_model.dart';
@@ -52,6 +54,215 @@ class _NotificationPageState extends State<NotificationPage> {
       ),
     );
   }
+
+  alertOptions(String letra) {
+    String dropdownvalue = '=';
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return new AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30.0))),
+            insetPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            content: Builder(
+              builder: (context) {
+                var height = MediaQuery.of(context).size.height;
+                var width = MediaQuery.of(context).size.width;
+
+                return Container(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Text("Configuración",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20,
+                                fontFamily: 'Poppins',
+                              )),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 40),
+                          child: Text(letra,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 17,
+                                fontFamily: 'Poppins',
+                              )),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 20, bottom: 10),
+                          width: width - 100,
+                          child: Text(
+                            "Tipo",
+                            style: TextStyle(
+                                fontSize: 14, color: Color(0xff828282)),
+                          ),
+                        ),
+                        Container(
+                          width: width - 100,
+                          height: 40,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: const Color(0xFFF5F5F5),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: DropdownButton(
+                                  items: dropdownItems,
+                                  value: dropdownvalue,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      dropdownvalue = newValue!;
+                                      log(dropdownvalue);
+                                    });
+                                  })),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 20, bottom: 10),
+                          width: width - 100,
+                          child: Text(
+                            "Valor",
+                            style: TextStyle(
+                                fontSize: 14, color: Color(0xff828282)),
+                          ),
+                        ),
+                        Container(
+                          width: width - 100,
+                          height: 40,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: const Color(0xFFF5F5F5),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: TextFormField(
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15,
+                                    fontFamily: 'Poppins'),
+                                decoration: InputDecoration(
+                                    hintText: "Ej. 10, 20, 100, etc...",
+                                    hintStyle: TextStyle(
+                                      color: Color(0xff8A888C),
+                                    ),
+                                    contentPadding:
+                                        EdgeInsets.only(top: 4.5, left: 14),
+                                    border: InputBorder.none,
+                                    suffixIcon: Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8.0, right: 15),
+                                    )),
+                              )),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 30),
+                          width: width - 100,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  elevation: 0.0,
+                                  primary: const Color(
+                                    0xffD6DD58,
+                                  )),
+                              child: Text("Guardar configuración",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      color: const Color(0xff414141)))),
+                        )
+                      ],
+                    ),
+                    height: height - 300,
+                    width: width - 50);
+              },
+            ),
+          );
+        });
+      },
+    );
+  }
+
+  getDatosTiles(List<Datos> datos, BuildContext context) {
+    List<Widget> listTiles = [];
+
+    for (int i = 0; i < datos.length; i++) {
+      listTiles.add(ListTileTheme(
+        contentPadding: EdgeInsets.only(left: 20),
+        child: ListTile(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          dense: true,
+          visualDensity: VisualDensity(vertical: -3),
+          title: Text(datos[i].letra,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Poppins',
+                  fontSize: 15)),
+          trailing: Container(
+            width: 30,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                alignment: Alignment.center,
+              ),
+              onPressed: () {
+                alertOptions(datos[i].letra);
+              },
+              child: Text("-",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Poppins',
+                      color: Color(0xff9AA121),
+                      fontSize: 15)),
+            ),
+          ),
+          tileColor: (i % 2 == 0) ? const Color(0xffFBFCEE) : null,
+        ),
+      ));
+    }
+
+    return listTiles;
+  }
+
+  Widget mallsList(List<Planta> plantas, context) {
+    if (plantas.isEmpty) {
+      return Center(
+          child: Text("No cuenta con Plantas",
+              style: TextStyle(
+                  fontFamily: 'poppins',
+                  color: Color.fromARGB(255, 147, 147, 147))));
+    } else {
+      return Column(
+          children: plantas.map((planta) {
+        return Container(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          child: Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ListTileTheme(
+              contentPadding: EdgeInsets.all(0),
+              child: ExpansionTile(
+                title: Text(
+                  planta.mall,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17,
+                      fontFamily: 'Poppins',
+                      color: Color(0xff414141)),
+                ),
+                children: getDatosTiles(planta.contents, context),
+              ),
+            ),
+          ),
+        );
+      }).toList());
+    }
+  }
 }
 
 appBarLogo(BuildContext context) {
@@ -98,213 +309,14 @@ appBarLogo(BuildContext context) {
   );
 }
 
-Widget mallsList(List<Planta> plantas, context) {
-  if (plantas.isEmpty) {
-    return Center(
-        child: Text("No cuenta con Plantas",
-            style: TextStyle(
-                fontFamily: 'poppins',
-                color: Color.fromARGB(255, 147, 147, 147))));
-  } else {
-    return Column(
-        children: plantas.map((planta) {
-      return Container(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-        child: Theme(
-          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: ListTileTheme(
-            contentPadding: EdgeInsets.all(0),
-            child: ExpansionTile(
-              title: Text(
-                planta.mall,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
-                    fontFamily: 'Poppins',
-                    color: Color(0xff414141)),
-              ),
-              children: getDatosTiles(planta.contents, context),
-            ),
-          ),
-        ),
-      );
-    }).toList());
-  }
-}
-
-getDatosTiles(List<Datos> datos, BuildContext context) {
-  List<Widget> listTiles = [];
-
-  for (int i = 0; i < datos.length; i++) {
-    listTiles.add(ListTileTheme(
-      contentPadding: EdgeInsets.only(left: 20),
-      child: ListTile(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        dense: true,
-        visualDensity: VisualDensity(vertical: -3),
-        title: Text(datos[i].letra,
-            style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Poppins',
-                fontSize: 15)),
-        trailing: Container(
-          width: 30,
-          child: TextButton(
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              alignment: Alignment.center,
-            ),
-            onPressed: () {
-              showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (context) {
-                  return AlertDialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                    insetPadding: EdgeInsets.zero,
-                    contentPadding: EdgeInsets.zero,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    content: Builder(
-                      builder: (context) {
-                        var height = MediaQuery.of(context).size.height;
-                        var width = MediaQuery.of(context).size.width;
-
-                        return Container(
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(top: 20),
-                                  child: Text("Configuración",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 20,
-                                        fontFamily: 'Poppins',
-                                      )),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 40),
-                                  child: Text(datos[i].letra,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 17,
-                                        fontFamily: 'Poppins',
-                                      )),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(top: 20, bottom: 10),
-                                  width: width - 100,
-                                  child: Text(
-                                    "Tipo",
-                                    style: TextStyle(
-                                        fontSize: 14, color: Color(0xff828282)),
-                                  ),
-                                ),
-                                Container(
-                                  width: width - 100,
-                                  height: 40,
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xFFF5F5F5),
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: TextFormField(
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 15,
-                                            fontFamily: 'Poppins'),
-                                        decoration: InputDecoration(
-                                            hintText: "Ej. <, >, =, <>,  ≤ ",
-                                            hintStyle: TextStyle(
-                                              color: Color(0xff8A888C),
-                                            ),
-                                            contentPadding: EdgeInsets.only(
-                                                top: 4.5, left: 14),
-                                            border: InputBorder.none,
-                                            suffixIcon: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0, right: 15),
-                                            )),
-                                      )),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(top: 20, bottom: 10),
-                                  width: width - 100,
-                                  child: Text(
-                                    "Valor",
-                                    style: TextStyle(
-                                        fontSize: 14, color: Color(0xff828282)),
-                                  ),
-                                ),
-                                Container(
-                                  width: width - 100,
-                                  height: 40,
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xFFF5F5F5),
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: TextFormField(
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 15,
-                                            fontFamily: 'Poppins'),
-                                        decoration: InputDecoration(
-                                            hintText: "Ej. 10, 20, 100, etc...",
-                                            hintStyle: TextStyle(
-                                              color: Color(0xff8A888C),
-                                            ),
-                                            contentPadding: EdgeInsets.only(
-                                                top: 4.5, left: 14),
-                                            border: InputBorder.none,
-                                            suffixIcon: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0, right: 15),
-                                            )),
-                                      )),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(top: 30),
-                                  width: width - 100,
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          elevation: 0.0,
-                                          primary: const Color(
-                                            0xffD6DD58,
-                                          )),
-                                      child: Text("Guardar configuración",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 14,
-                                              fontFamily: 'Poppins',
-                                              color: const Color(0xff414141)))),
-                                )
-                              ],
-                            ),
-                            height: height - 300,
-                            width: width - 50);
-                      },
-                    ),
-                  );
-                },
-              );
-            },
-            child: Text("-",
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Poppins',
-                    color: Color(0xff9AA121),
-                    fontSize: 15)),
-          ),
-        ),
-        tileColor: (i % 2 == 0) ? const Color(0xffFBFCEE) : null,
-      ),
-    ));
-  }
-
-  return listTiles;
+List<DropdownMenuItem<String>> get dropdownItems {
+  List<DropdownMenuItem<String>> menuItems = [
+    DropdownMenuItem(child: Text("<"), value: "<"),
+    DropdownMenuItem(child: Text(">"), value: ">"),
+    DropdownMenuItem(child: Text("="), value: "="),
+    DropdownMenuItem(child: Text("<>"), value: "<>"),
+    DropdownMenuItem(child: Text("≤"), value: "≤"),
+    DropdownMenuItem(child: Text("≥"), value: "≥"),
+  ];
+  return menuItems;
 }

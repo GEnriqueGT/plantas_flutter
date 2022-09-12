@@ -82,6 +82,7 @@ Widget mallsList(List<Planta> plantas, context) {
               child: ListTileTheme(
                 contentPadding: EdgeInsets.all(0),
                 child: ExpansionTile(
+                  iconColor: Color(0xff9F9F9F),
                   title: Text(
                     planta.mall,
                     style: const TextStyle(
