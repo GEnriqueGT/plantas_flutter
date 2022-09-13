@@ -63,8 +63,8 @@ class _NotificationPageState extends State<NotificationPage> {
       builder: (context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-          return new AlertDialog(
-            shape: RoundedRectangleBorder(
+          return AlertDialog(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30.0))),
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
@@ -74,14 +74,16 @@ class _NotificationPageState extends State<NotificationPage> {
                 var height = MediaQuery.of(context).size.height;
                 var width = MediaQuery.of(context).size.width;
 
-                return Container(
+                return SizedBox(
+                    height: height - 300,
+                    width: width - 50,
                     child: Column(
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 20),
-                          child: Text("Configuración",
+                          child: Text("Notificaciones",
                               style: TextStyle(
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w600,
                                 fontSize: 20,
                                 fontFamily: 'Poppins',
                               )),
@@ -108,18 +110,26 @@ class _NotificationPageState extends State<NotificationPage> {
                           width: width - 100,
                           height: 40,
                           child: Container(
+                              padding: EdgeInsets.only(left: 20, right: 20),
                               decoration: BoxDecoration(
                                   color: const Color(0xFFF5F5F5),
                                   borderRadius: BorderRadius.circular(5)),
-                              child: DropdownButton(
-                                  items: dropdownItems,
-                                  value: dropdownvalue,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      dropdownvalue = newValue!;
-                                      log(dropdownvalue);
-                                    });
-                                  })),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                    hint: Text("Ej. <, >, =, <>,  ≤ "),
+                                    borderRadius: BorderRadius.circular(5),
+                                    dropdownColor: Color(0xFFF5F5F5),
+                                    icon: Icon(IconData(0xf13d,
+                                        fontFamily: 'MaterialIcons')),
+                                    items: dropdownItems,
+                                    value: dropdownvalue,
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        dropdownvalue = newValue!;
+                                        log(dropdownvalue);
+                                      });
+                                    }),
+                              )),
                         ),
                         Container(
                           padding: EdgeInsets.only(top: 20, bottom: 10),
@@ -176,9 +186,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                       color: const Color(0xff414141)))),
                         )
                       ],
-                    ),
-                    height: height - 300,
-                    width: width - 50);
+                    ));
               },
             ),
           );
