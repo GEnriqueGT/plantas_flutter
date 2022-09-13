@@ -38,6 +38,7 @@ class _DetailsPageState extends State<DetailsPage> {
         sectionText("Detalles"),
         detallesCards(),
         sectionRowFilter(context),
+        activeFilters(),
         chartQ(qState),
         SizedBox(
           height: 50,
@@ -84,6 +85,45 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
+  Widget activeFilter(String text, int index) {
+    return Container(
+      width: 150,
+      height: 35,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10.0, right: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff9AA121)),
+            ),
+            IconButton(
+                constraints: BoxConstraints(),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  setState(() {
+                    changeState(index);
+                  });
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: Color(0xff9AA121),
+                  size: 20,
+                ))
+          ],
+        ),
+      ),
+      decoration: BoxDecoration(
+          color: Color.fromARGB(39, 214, 221, 88),
+          borderRadius: BorderRadius.circular(30)),
+    );
+  }
+
   Widget sectionRowFilter(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 40),
@@ -96,8 +136,10 @@ class _DetailsPageState extends State<DetailsPage> {
             width: 130,
             padding: const EdgeInsets.only(right: 20),
             child: ElevatedButton(
-              onPressed: () {
-                alertOptions(context);
+              onPressed: () async {
+                await alertOptions(context);
+
+                setState(() {});
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,6 +171,49 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
+  Widget activeFilters() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20),
+          child: Text(
+            "Filtros activos",
+            style: TextStyle(
+                fontFamily: 'Poppins',
+                color: Color(0xff808080),
+                fontSize: 16,
+                fontWeight: FontWeight.w700),
+          ),
+        ),
+        Container(
+          height: 40,
+          width: 250,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  (qState) ? activeFilter("DBO EN SALIDA", 1) : SizedBox()
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  void changeState(int index) {
+    switch (index) {
+      case 1:
+        qState = !qState;
+        break;
+    }
+  }
+
   alertOptions(BuildContext context) {
     bool localQState = qState;
     bool localPhState = phState;
@@ -139,12 +224,52 @@ class _DetailsPageState extends State<DetailsPage> {
     bool localPtState = ptState;
     bool localDboState = dboState;
 
+    void changeOptionState(int index, bool valor) {
+      switch (index) {
+        case 1:
+          localQState = valor;
+          break;
+      }
+    }
+
+    Widget tileOption(context, letra, colorIndex) {
+      return StatefulBuilder(builder: (context, setState) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20),
+          child: ListTile(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            dense: true,
+            visualDensity: VisualDensity(vertical: -3),
+            title: Text(letra,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Poppins',
+                    fontSize: 15)),
+            trailing: Container(
+              width: 20,
+              child: Checkbox(
+                  activeColor: (colorIndex == true) ? Color(0xff9AA121) : null,
+                  value: localQState,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6)),
+                  onChanged: (bool? state) {
+                    setState(() {
+                      changeOptionState(1, state!);
+                    });
+                  }),
+            ),
+            tileColor: const Color(0xffFBFCEE),
+          ),
+        );
+      });
+    }
+
     return showDialog(
       context: context,
       barrierDismissible: true,
       builder: (context) {
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
+        return StatefulBuilder(builder: (context, setState) {
           // ignore: unnecessary_new
           return new AlertDialog(
             shape: RoundedRectangleBorder(
@@ -185,42 +310,12 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                         Padding(
                             padding: EdgeInsets.only(top: 10),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 20.0, right: 20),
-                              child: ListTile(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
-                                dense: true,
-                                visualDensity: VisualDensity(vertical: -3),
-                                title: Text("Q",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: 'Poppins',
-                                        fontSize: 15)),
-                                trailing: Container(
-                                  width: 20,
-                                  child: Checkbox(
-                                      activeColor: Color(0xff9AA121),
-                                      value: localQState,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(6)),
-                                      onChanged: (bool? state) {
-                                        setState(() {
-                                          localQState = state!;
-                                        });
-                                      }),
-                                ),
-                                tileColor: const Color(0xffFBFCEE),
-                              ),
-                            )),
+                            child: tileOption(context, "Q", true)),
                         ElevatedButton(
                             onPressed: () {
                               setState(() {
                                 qState = localQState;
                                 Navigator.pop(context);
-                                log(qState.toString());
                               });
                             },
                             style: ElevatedButton.styleFrom(
@@ -436,7 +531,7 @@ sectionText(String texto) {
 
 chartsectionText(String texto, Color color) {
   return Padding(
-    padding: const EdgeInsets.fromLTRB(35, 20, 0, 40),
+    padding: const EdgeInsets.fromLTRB(20, 20, 0, 50),
     child: Text("$texto",
         style: TextStyle(
             fontWeight: FontWeight.w500,
