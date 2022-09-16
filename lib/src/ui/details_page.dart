@@ -39,7 +39,7 @@ class _DetailsPageState extends State<DetailsPage> {
         detallesCards(),
         sectionRowFilter(context),
         activeFilters(),
-        chartQ(qState),
+        chartList(),
         SizedBox(
           height: 50,
         )
@@ -124,6 +124,14 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
+  Widget chartList() {
+    return Column(
+      children: [
+        (qState) ? chartQ() : SizedBox(),
+      ],
+    );
+  }
+
   Widget sectionRowFilter(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 40),
@@ -196,7 +204,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  (qState) ? activeFilter("DBO EN SALIDA", 1) : SizedBox()
+                  (qState) ? activeFilter("Q EN ENTRADA", 1) : SizedBox()
                 ],
               )
             ],
@@ -223,16 +231,40 @@ class _DetailsPageState extends State<DetailsPage> {
     bool localNtState = ntState;
     bool localPtState = ptState;
     bool localDboState = dboState;
+    bool localSsState = ssState;
 
     void changeOptionState(int index, bool valor) {
       switch (index) {
         case 1:
           localQState = valor;
+
+          break;
+        case 2:
+          localPhState = valor;
+          break;
+        case 3:
+          localSslmState = valor;
+
+          break;
+        case 4:
+          localSsedState = valor;
+          break;
+        case 5:
+          localOdState = valor;
+          break;
+        case 6:
+          localNtState = valor;
+          break;
+        case 7:
+          localPtState = valor;
+          break;
+        case 8:
+          localDboState = valor;
           break;
       }
     }
 
-    Widget tileOption(context, letra, colorIndex) {
+    Widget tileOption(context, letra, int optionIndex) {
       return StatefulBuilder(builder: (context, setState) {
         return Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20),
@@ -249,20 +281,42 @@ class _DetailsPageState extends State<DetailsPage> {
             trailing: Container(
               width: 20,
               child: Checkbox(
-                  activeColor: (colorIndex == true) ? Color(0xff9AA121) : null,
+                  activeColor: Color(0xff9AA121),
                   value: localQState,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6)),
                   onChanged: (bool? state) {
                     setState(() {
-                      changeOptionState(1, state!);
+                      changeOptionState(optionIndex, state!);
                     });
                   }),
             ),
-            tileColor: const Color(0xffFBFCEE),
+            tileColor: (optionIndex % 2 != 0) ? Color(0xffFBFCEE) : null,
           ),
         );
       });
+    }
+
+    List<String> letrasArray = [
+      "Q",
+      "pH",
+      "SSLM",
+      "SSED",
+      "OD",
+      "NT",
+      "PT",
+      "DBO",
+      "SS"
+    ];
+
+    List<Widget> arrayTile() {
+      List<Widget> array = [];
+
+      for (int i = 0; i < letrasArray.length; i++) {
+        array.add(tileOption(context, letrasArray[i], i + 1));
+      }
+
+      return array;
     }
 
     return showDialog(
@@ -270,7 +324,6 @@ class _DetailsPageState extends State<DetailsPage> {
       barrierDismissible: true,
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
-          // ignore: unnecessary_new
           return new AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30.0))),
@@ -283,7 +336,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 var width = MediaQuery.of(context).size.width;
 
                 return SizedBox(
-                    height: height - 300,
+                    height: height - 150,
                     width: width - 50,
                     child: Column(
                       children: [
@@ -310,11 +363,21 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                         Padding(
                             padding: EdgeInsets.only(top: 10),
-                            child: tileOption(context, "Q", true)),
+                            child: Column(
+                              children: arrayTile(),
+                            )),
                         ElevatedButton(
                             onPressed: () {
                               setState(() {
                                 qState = localQState;
+                                phState = localPhState;
+                                sslmState = localSslmState;
+                                ssedState = localSsedState;
+                                odState = localOdState;
+                                ntState = localNtState;
+                                ptState = localPtState;
+                                dboState = localDboState;
+                                ssState = localSsState;
                                 Navigator.pop(context);
                               });
                             },
@@ -642,18 +705,14 @@ Widget chartNt() {
   );
 }
 
-Widget chartQ(bool qState) {
-  if (qState) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        chartsectionText("Caudal entrada Q", Color(0xffA6AE23)),
-        chart(Color(0xffD6DD58), Color(0xffA6AE23)),
-      ],
-    );
-  } else {
-    return SizedBox();
-  }
+Widget chartQ() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      chartsectionText("Caudal entrada Q", Color(0xffA6AE23)),
+      chart(Color(0xffD6DD58), Color(0xffA6AE23)),
+    ],
+  );
 }
 
 Widget chartsSS() {

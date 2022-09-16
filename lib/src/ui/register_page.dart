@@ -15,6 +15,7 @@ class RegisterParametersPage extends StatefulWidget {
 
 class RregisterParametersPageState extends State<RegisterParametersPage> {
   int pagina = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,11 +29,13 @@ class RregisterParametersPageState extends State<RegisterParametersPage> {
     );
   }
 
+  List<Widget> _mywidgets = [operativosForm(), CalidadForm(), nitrogenoForm()];
+
   Widget Formulario(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        selection(pagina, context),
+        _mywidgets.elementAt(pagina),
         continueButton(),
         Container(
           width: MediaQuery.of(context).size.width,
@@ -161,24 +164,7 @@ Widget titulo(BuildContext context, mallName) {
   );
 }
 
-selection(int pagina, BuildContext context) {
-  switch (pagina) {
-    case 0:
-      return operativosForm(context);
-      break;
-
-    case 1:
-      return CalidadForm(context);
-      break;
-    case 2:
-      return nirogenoForm(context);
-      break;
-    default:
-      return Navigator.pop(context);
-  }
-}
-
-Widget operativosForm(BuildContext context) {
+Widget operativosForm() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -228,17 +214,18 @@ Widget operativosForm(BuildContext context) {
           ],
         ),
       ),
-      campo("Contador", "Correlativo"),
-      campo("OD", "[mg/L]"),
-      campo("T", "Grados Celcius"),
-      campo("pH"),
-      campo("SSED", "[mg/L]"),
-      campo("Cloro libre", "[mg/L]")
+      Campo(
+          key: Key("Contador"), description: "Contador", sufix: "Correlativo"),
+      Campo(key: Key("OD"), description: "OD", sufix: "[mg/L]"),
+      Campo(key: Key("TOperativos"), description: "T", sufix: "Grados Celcius"),
+      Campo(key: Key("pHOperativos"), description: "pH"),
+      Campo(key: Key("SSED"), description: "SSED", sufix: "[mg/L]"),
+      Campo(key: Key("Cloro"), description: "Cloro libre", sufix: "[mg/L]")
     ],
   );
 }
 
-Widget CalidadForm(BuildContext context) {
+Widget CalidadForm() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -296,19 +283,19 @@ Widget CalidadForm(BuildContext context) {
           ],
         ),
       ),
-      campo("CAUDAL", "[mg/L]"),
-      campo("DBO", "[mg/L]"),
-      campo("DQO", "[mg/L]"),
-      campo("SST", "[mg/L]"),
-      campo("pH", "[mg/L]"),
-      campo("T", "[mg/L]"),
-      campo("GyA", "[mg/L]"),
-      campo("P", "[mg/L]"),
+      Campo(key: Key("CAUDAL"), description: "CAUDAL", sufix: "[mg/L]"),
+      Campo(key: Key("DBO"), description: "DBO", sufix: "[mg/L]"),
+      Campo(key: Key("DQO"), description: "DQO", sufix: "[mg/L]"),
+      Campo(key: Key("SST"), description: "SST", sufix: "[mg/L]"),
+      Campo(key: Key("pHCalidad"), description: "pH", sufix: "[mg/L]"),
+      Campo(key: Key("TCalidad"), description: "T", sufix: "[mg/L]"),
+      Campo(key: Key("GyA"), description: "GyA", sufix: "[mg/L]"),
+      Campo(key: Key("P"), description: "P", sufix: "[mg/L]"),
     ],
   );
 }
 
-Widget nirogenoForm(BuildContext context) {
+Widget nitrogenoForm() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -374,58 +361,66 @@ Widget nirogenoForm(BuildContext context) {
           ],
         ),
       ),
-      campo("NT", "[mg/L]"),
-      campo("NH4", "[mg/L]"),
-      campo("NO3", "[mg/L]"),
-      campo("NO2", "[mg/L]"),
-      campo("NKT", "[mg/L]")
+      Campo(key: Key("NT"), description: "NT", sufix: "[mg/L]"),
+      Campo(key: Key("NH4"), description: " NH4", sufix: "[mg/L]"),
+      Campo(key: Key("NO3"), description: "NO3", sufix: "[mg/L]"),
+      Campo(key: Key("NO2"), description: "NO2", sufix: "[mg/L]"),
+      Campo(key: Key("NKT"), description: "NKT", sufix: "[mg/L]")
     ],
   );
 }
 
-Widget campo(String description, [String sufix = ""]) {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text("$description",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
-              fontFamily: 'Poppins',
-            )),
-        Container(
-          width: 270,
-          height: 40,
-          child: Container(
-              decoration: BoxDecoration(
-                  color: const Color(0xFFF5F5F5),
-                  borderRadius: BorderRadius.circular(5)),
-              child: TextFormField(
-                style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15,
-                    fontFamily: 'Poppins'),
-                decoration: InputDecoration(
-                    hintText: "Ej 1,2,3,4",
-                    hintStyle: TextStyle(
-                      color: Color(0xff8A888C),
-                    ),
-                    contentPadding: EdgeInsets.only(top: 4.5, left: 14),
-                    border: InputBorder.none,
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.only(top: 8.0, right: 15),
-                      child: Text("$sufix",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                            fontFamily: 'Poppins',
-                          )),
-                    )),
+class Campo extends StatelessWidget {
+  final String description;
+  final String? sufix;
+  const Campo({Key? key, required this.description, this.sufix})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("$description",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+                fontFamily: 'Poppins',
               )),
-        )
-      ],
-    ),
-  );
+          Container(
+            width: 270,
+            height: 40,
+            child: Container(
+                decoration: BoxDecoration(
+                    color: const Color(0xFFF5F5F5),
+                    borderRadius: BorderRadius.circular(5)),
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                      fontFamily: 'Poppins'),
+                  decoration: InputDecoration(
+                      hintText: "Ej 1,2,3,4",
+                      hintStyle: TextStyle(
+                        color: Color(0xff8A888C),
+                      ),
+                      contentPadding: EdgeInsets.only(top: 4.5, left: 14),
+                      border: InputBorder.none,
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(top: 8.0, right: 15),
+                        child: Text("$sufix",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              fontFamily: 'Poppins',
+                            )),
+                      )),
+                )),
+          )
+        ],
+      ),
+    );
+  }
 }
