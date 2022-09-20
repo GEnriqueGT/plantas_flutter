@@ -142,6 +142,9 @@ class _DetailsPageState extends State<DetailsPage> {
     return Column(
       children: [
         (qState) ? chartQ() : SizedBox(),
+        (ntState) ? chartNt() : SizedBox(),
+        (dboState) ? chartsDBO() : SizedBox(),
+        (ssState) ? chartsSS() : SizedBox(),
       ],
     );
   }
@@ -238,36 +241,113 @@ class _DetailsPageState extends State<DetailsPage> {
 
   alertOptions(BuildContext context) {
     bool localQstate = qState;
+    bool localPhstate = phState;
+    bool localSslmstate = sslmState;
+    bool localSsedstate = ssedState;
+    bool localOdstate = odState;
+    bool localNtstate = ntState;
+    bool localPtstate = ptState;
+    bool localDbostate = dboState;
+    bool localSsstate = ssState;
 
-    Widget tileOption(context, letra, int optionIndex, bool localState) {
-      return StatefulBuilder(builder: (context, setState) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20),
-          child: ListTile(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            dense: true,
-            visualDensity: VisualDensity(vertical: -3),
-            title: Text(letra,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'Poppins',
-                    fontSize: 15)),
-            trailing: Container(
-              width: 20,
-              child: Checkbox(
-                  activeColor: Color(0xff9AA121),
-                  value: localState,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6)),
-                  onChanged: (bool? state) {
-                    setState(() {});
-                  }),
-            ),
-            tileColor: (optionIndex % 2 != 0) ? Color(0xffFBFCEE) : null,
-          ),
-        );
-      });
+    List<String> letras = [
+      "Q",
+      "pH",
+      "SSLM",
+      "SSED",
+      "OD",
+      "NT",
+      "PT",
+      "DBO",
+      "SS"
+    ];
+
+    asignar(String letra, bool value) {
+      switch (letra) {
+        case "Q":
+          localQstate = value;
+          break;
+        case "pH":
+          localPhstate = value;
+          break;
+        case "SSLM":
+          localSslmstate = value;
+          break;
+        case "SSED":
+          localSsedstate = value;
+          break;
+        case "OD":
+          localOdstate = value;
+          break;
+        case "NT":
+          localNtstate = value;
+          break;
+        case "PT":
+          localPtstate = value;
+          break;
+        case "DBO":
+          localDbostate = value;
+          break;
+        case "SS":
+          localSsstate = value;
+          break;
+      }
+    }
+
+    bool obtener(String letra) {
+      bool state = false;
+      switch (letra) {
+        case "Q":
+          state = localQstate;
+          break;
+        case "pH":
+          state = localPhstate;
+          break;
+        case "SSLM":
+          state = localSslmstate;
+          break;
+        case "SSED":
+          state = localSsedstate;
+          break;
+        case "OD":
+          state = localOdstate;
+          break;
+        case "NT":
+          state = localNtstate;
+          break;
+        case "PT":
+          state = localPtstate;
+          break;
+        case "DBO":
+          state = localDbostate;
+          break;
+        case "SS":
+          state = localSsstate;
+          break;
+      }
+      return state;
+    }
+
+    List<Widget> obtenerTiles() {
+      List<Widget> tiles = [];
+
+      for (var i = 0; i < letras.length; i++) {
+        tiles.add(OptionTile(
+          key: Key(letras[i]),
+          onChange: (local) {
+            setState(
+              () {
+                asignar(letras[i], local);
+              },
+            );
+          },
+          localState: obtener(letras[i]),
+          letra: letras[i],
+          colorTile: (i % 2 != 0) ? Color(0xffFBFCEE) : null,
+        ));
+      }
+
+      return tiles;
     }
 
     return showDialog(
@@ -313,23 +393,24 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                         ),
                         Padding(
-                            padding: EdgeInsets.only(top: 10), child: Column()),
-                        OptionTile(
-                          key: Key("Q"),
-                          onChange: (local) {
-                            setState(
-                              () {
-                                localQstate = local;
-                              },
-                            );
-                          },
-                          localState: localQstate,
-                          letra: "Q",
-                        ),
+                            padding: EdgeInsets.only(top: 10),
+                            child: Column(
+                              children: obtenerTiles(),
+                            )),
                         ElevatedButton(
                             onPressed: () {
                               setState(() {
+                                log(qState.toString());
+                                log(sslmState.toString());
                                 qState = localQstate;
+                                phState = localPhstate;
+                                sslmState = localSslmstate;
+                                ssedState = localSsedstate;
+                                odState = localOdstate;
+                                ntState = localNtstate;
+                                ptState = localPtstate;
+                                dboState = localDbostate;
+                                ssState = localSsstate;
                                 Navigator.pop(context);
                               });
                             },
@@ -690,12 +771,14 @@ Widget chartsDBO() {
 class OptionTile extends StatefulWidget {
   final Function onChange;
   final String letra;
+  final Color? colorTile;
   bool localState;
   OptionTile(
       {Key? key,
       required this.onChange,
       required this.localState,
-      required this.letra})
+      required this.letra,
+      required this.colorTile})
       : super(key: key);
 
   @override
@@ -730,7 +813,7 @@ class OptionTileState extends State<OptionTile> {
                 });
               }),
         ),
-        tileColor: Color(0xffFBFCEE),
+        tileColor: widget.colorTile,
       ),
     );
   }
