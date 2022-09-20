@@ -16,6 +16,20 @@ class DetailsPage extends StatefulWidget {
   _DetailsPageState createState() => _DetailsPageState();
 }
 
+class TileOption extends StatefulWidget {
+  TileOption({Key? key}) : super(key: key);
+
+  @override
+  _TileOptionState createState() => _TileOptionState();
+}
+
+class _TileOptionState extends State<TileOption> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
 class _DetailsPageState extends State<DetailsPage> {
   bool qState = true;
   bool phState = true;
@@ -223,48 +237,9 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   alertOptions(BuildContext context) {
-    bool localQState = qState;
-    bool localPhState = phState;
-    bool localSslmState = sslmState;
-    bool localSsedState = ssedState;
-    bool localOdState = odState;
-    bool localNtState = ntState;
-    bool localPtState = ptState;
-    bool localDboState = dboState;
-    bool localSsState = ssState;
+    bool localQstate = qState;
 
-    void changeOptionState(int index, bool valor) {
-      switch (index) {
-        case 1:
-          localQState = valor;
-
-          break;
-        case 2:
-          localPhState = valor;
-          break;
-        case 3:
-          localSslmState = valor;
-
-          break;
-        case 4:
-          localSsedState = valor;
-          break;
-        case 5:
-          localOdState = valor;
-          break;
-        case 6:
-          localNtState = valor;
-          break;
-        case 7:
-          localPtState = valor;
-          break;
-        case 8:
-          localDboState = valor;
-          break;
-      }
-    }
-
-    Widget tileOption(context, letra, int optionIndex) {
+    Widget tileOption(context, letra, int optionIndex, bool localState) {
       return StatefulBuilder(builder: (context, setState) {
         return Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20),
@@ -282,13 +257,11 @@ class _DetailsPageState extends State<DetailsPage> {
               width: 20,
               child: Checkbox(
                   activeColor: Color(0xff9AA121),
-                  value: localQState,
+                  value: localState,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6)),
                   onChanged: (bool? state) {
-                    setState(() {
-                      changeOptionState(optionIndex, state!);
-                    });
+                    setState(() {});
                   }),
             ),
             tileColor: (optionIndex % 2 != 0) ? Color(0xffFBFCEE) : null,
@@ -297,34 +270,12 @@ class _DetailsPageState extends State<DetailsPage> {
       });
     }
 
-    List<String> letrasArray = [
-      "Q",
-      "pH",
-      "SSLM",
-      "SSED",
-      "OD",
-      "NT",
-      "PT",
-      "DBO",
-      "SS"
-    ];
-
-    List<Widget> arrayTile() {
-      List<Widget> array = [];
-
-      for (int i = 0; i < letrasArray.length; i++) {
-        array.add(tileOption(context, letrasArray[i], i + 1));
-      }
-
-      return array;
-    }
-
     return showDialog(
       context: context,
       barrierDismissible: true,
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
-          return new AlertDialog(
+          return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30.0))),
             insetPadding: EdgeInsets.zero,
@@ -362,22 +313,23 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                         ),
                         Padding(
-                            padding: EdgeInsets.only(top: 10),
-                            child: Column(
-                              children: arrayTile(),
-                            )),
+                            padding: EdgeInsets.only(top: 10), child: Column()),
+                        OptionTile(
+                          key: Key("Q"),
+                          onChange: (local) {
+                            setState(
+                              () {
+                                localQstate = local;
+                              },
+                            );
+                          },
+                          localState: localQstate,
+                          letra: "Q",
+                        ),
                         ElevatedButton(
                             onPressed: () {
                               setState(() {
-                                qState = localQState;
-                                phState = localPhState;
-                                sslmState = localSslmState;
-                                ssedState = localSsedState;
-                                odState = localOdState;
-                                ntState = localNtState;
-                                ptState = localPtState;
-                                dboState = localDboState;
-                                ssState = localSsState;
+                                qState = localQstate;
                                 Navigator.pop(context);
                               });
                             },
@@ -733,4 +685,53 @@ Widget chartsDBO() {
       chart(Color(0xff62DFD8), Color(0xff23AEA6)),
     ],
   );
+}
+
+class OptionTile extends StatefulWidget {
+  final Function onChange;
+  final String letra;
+  bool localState;
+  OptionTile(
+      {Key? key,
+      required this.onChange,
+      required this.localState,
+      required this.letra})
+      : super(key: key);
+
+  @override
+  OptionTileState createState() => OptionTileState();
+}
+
+class OptionTileState extends State<OptionTile> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, right: 20),
+      child: ListTile(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        dense: true,
+        visualDensity: VisualDensity(vertical: -3),
+        title: Text(widget.letra,
+            style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontFamily: 'Poppins',
+                fontSize: 15)),
+        trailing: Container(
+          width: 20,
+          child: Checkbox(
+              activeColor: Color(0xff9AA121),
+              value: widget.localState,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+              onChanged: (bool? state) {
+                setState(() {
+                  widget.localState = state!;
+                  widget.onChange(widget.localState);
+                });
+              }),
+        ),
+        tileColor: Color(0xffFBFCEE),
+      ),
+    );
+  }
 }
