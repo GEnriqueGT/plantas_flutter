@@ -52,7 +52,7 @@ class _DetailsPageState extends State<DetailsPage> {
         sectionText("Detalles"),
         detallesCards(),
         sectionRowFilter(context),
-        activeFilters(),
+        activeFilters(context),
         chartList(),
         SizedBox(
           height: 50,
@@ -100,41 +100,46 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Widget activeFilter(String text, int index) {
-    return Container(
-      width: 150,
-      height: 35,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10.0, right: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              text,
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff9AA121)),
-            ),
-            IconButton(
-                constraints: BoxConstraints(),
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  setState(() {
-                    changeState(index);
-                  });
-                },
-                icon: Icon(
-                  Icons.close,
-                  color: Color(0xff9AA121),
-                  size: 20,
-                ))
-          ],
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: Container(
+        height: 35,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15.0, right: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Text(
+                  text,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff9AA121)),
+                ),
+              ),
+              IconButton(
+                  constraints: BoxConstraints(),
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    setState(() {
+                      changeState(index);
+                    });
+                  },
+                  icon: Icon(
+                    Icons.close,
+                    color: Color(0xff9AA121),
+                    size: 20,
+                  ))
+            ],
+          ),
         ),
+        decoration: BoxDecoration(
+            color: Color.fromARGB(39, 214, 221, 88),
+            borderRadius: BorderRadius.circular(30)),
       ),
-      decoration: BoxDecoration(
-          color: Color.fromARGB(39, 214, 221, 88),
-          borderRadius: BorderRadius.circular(30)),
     );
   }
 
@@ -142,7 +147,12 @@ class _DetailsPageState extends State<DetailsPage> {
     return Column(
       children: [
         (qState) ? chartQ() : SizedBox(),
+        (phState) ? chartpH() : SizedBox(),
+        (sslmState) ? chartSslm() : SizedBox(),
+        (ssedState) ? chartSsed() : SizedBox(),
+        (odState) ? chartOd() : SizedBox(),
         (ntState) ? chartNt() : SizedBox(),
+        (ptState) ? chartPt() : SizedBox(),
         (dboState) ? chartsDBO() : SizedBox(),
         (ssState) ? chartsSS() : SizedBox(),
       ],
@@ -196,7 +206,7 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-  Widget activeFilters() {
+  Widget activeFilters(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -213,7 +223,7 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
         Container(
           height: 40,
-          width: 250,
+          width: MediaQuery.of(context).size.width - 155,
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
@@ -221,7 +231,15 @@ class _DetailsPageState extends State<DetailsPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  (qState) ? activeFilter("Q EN ENTRADA", 1) : SizedBox()
+                  (qState) ? activeFilter("Q EN ENTRADA", 1) : SizedBox(),
+                  (phState) ? activeFilter("pH EN SALIDA", 2) : SizedBox(),
+                  (sslmState) ? activeFilter("SSLM EN SALIDA", 3) : SizedBox(),
+                  (ssedState) ? activeFilter("SSED EN ENTRADA", 4) : SizedBox(),
+                  (odState) ? activeFilter("OD EN SALIDA", 5) : SizedBox(),
+                  (ntState) ? activeFilter("NT EN SALIDA", 6) : SizedBox(),
+                  (ptState) ? activeFilter("PT EN SALIDA", 7) : SizedBox(),
+                  (dboState) ? activeFilter("DBO EN SALIDA", 8) : SizedBox(),
+                  (ssState) ? activeFilter("SS EN SALIDA", 9) : SizedBox(),
                 ],
               )
             ],
@@ -235,6 +253,36 @@ class _DetailsPageState extends State<DetailsPage> {
     switch (index) {
       case 1:
         qState = !qState;
+        break;
+
+      case 2:
+        phState = !phState;
+        break;
+
+      case 3:
+        sslmState = !sslmState;
+        break;
+      case 4:
+        ssedState = !ssedState;
+        break;
+
+      case 5:
+        odState = !odState;
+        break;
+
+      case 6:
+        ntState = !ntState;
+        break;
+      case 7:
+        ptState = !ptState;
+        break;
+
+      case 8:
+        dboState = !dboState;
+        break;
+
+      case 9:
+        ssState = !ssState;
         break;
     }
   }
@@ -728,6 +776,59 @@ Widget chart(Color lineColor, Color dotColor) {
   );
 }
 
+Widget chartQ() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      chartsectionText("Caudal entrada Q", Color(0xffA6AE23)),
+      chart(Color(0xffD6DD58), Color(0xffA6AE23)),
+    ],
+  );
+}
+
+Widget chartpH() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      chartsectionText("pH EN SALIDA", Color.fromARGB(255, 174, 35, 169)),
+      chart(
+          Color.fromARGB(255, 208, 88, 221), Color.fromARGB(255, 160, 35, 174)),
+    ],
+  );
+}
+
+Widget chartSslm() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      chartsectionText("SSLM EN SALIDA", Color.fromARGB(255, 174, 35, 35)),
+      chart(Color.fromARGB(255, 221, 88, 88), Color.fromARGB(255, 174, 35, 35)),
+    ],
+  );
+}
+
+Widget chartSsed() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      chartsectionText("SSED EN ENTRADA", Color.fromARGB(255, 40, 174, 35)),
+      chart(
+          Color.fromARGB(255, 88, 221, 112), Color.fromARGB(255, 35, 174, 60)),
+    ],
+  );
+}
+
+Widget chartOd() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      chartsectionText("OD EN SALIDA", Color.fromARGB(255, 174, 81, 35)),
+      chart(
+          Color.fromARGB(255, 221, 130, 88), Color.fromARGB(255, 174, 95, 35)),
+    ],
+  );
+}
+
 Widget chartNt() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -738,12 +839,13 @@ Widget chartNt() {
   );
 }
 
-Widget chartQ() {
+Widget chartPt() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      chartsectionText("Caudal entrada Q", Color(0xffA6AE23)),
-      chart(Color(0xffD6DD58), Color(0xffA6AE23)),
+      chartsectionText("PT EN SALIDA", Color.fromARGB(255, 140, 36, 178)),
+      chart(
+          Color.fromARGB(255, 183, 88, 221), Color.fromARGB(255, 147, 36, 178)),
     ],
   );
 }
