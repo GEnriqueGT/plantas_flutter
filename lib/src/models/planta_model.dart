@@ -5,7 +5,7 @@ class Planta {
 
   factory Planta.fromJson(Map json) {
     return Planta(
-        mall: json['plantass']['mall'], contents: json['plantas']['contents']);
+        mall: json['plantas']['mall'], contents: json['plantas']['contents']);
   }
 }
 

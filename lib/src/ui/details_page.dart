@@ -391,7 +391,7 @@ class _DetailsPageState extends State<DetailsPage> {
           },
           localState: obtener(letras[i]),
           letra: letras[i],
-          colorTile: (i % 2 != 0) ? Color(0xffFBFCEE) : null,
+          colorTile: (i % 2 == 0) ? Color(0xffFBFCEE) : null,
         ));
       }
 
@@ -415,7 +415,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 var width = MediaQuery.of(context).size.width;
 
                 return SizedBox(
-                    height: height - 150,
+                    height: height - (height * 0.20),
                     width: width - 50,
                     child: Column(
                       children: [
@@ -445,6 +445,31 @@ class _DetailsPageState extends State<DetailsPage> {
                             child: Column(
                               children: obtenerTiles(),
                             )),
+                        Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Container(
+                            width: width - 100,
+                            child: Text('Rango de fecha',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 17,
+                                  fontFamily: 'Poppins',
+                                )),
+                          ),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.only(top: 10, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                fechaInput("Fecha Inicio"),
+                                Icon(
+                                  Icons.arrow_forward_rounded,
+                                  size: 20,
+                                ),
+                                fechaInput("Fecha fin")
+                              ],
+                            )),
                         ElevatedButton(
                             onPressed: () {
                               setState(() {
@@ -473,7 +498,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 child: Text("Aplicar filtros",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 20,
+                                        fontSize: 16,
                                         fontFamily: 'Poppins',
                                         color: const Color(0xff414141))),
                               ),
@@ -772,6 +797,23 @@ Widget chart(Color lineColor, Color dotColor) {
               ]),
         ],
       ),
+    ),
+  );
+}
+
+Widget fechaInput(String texto) {
+  return Container(
+    decoration: BoxDecoration(
+        color: const Color(0xFFF5F5F5), borderRadius: BorderRadius.circular(5)),
+    width: 120,
+    height: 40,
+    child: TextFormField(
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(left: 20.0, bottom: 5),
+          border: InputBorder.none,
+          hintText: texto),
+      style: TextStyle(
+          fontWeight: FontWeight.w400, fontSize: 12, fontFamily: 'Poppins'),
     ),
   );
 }

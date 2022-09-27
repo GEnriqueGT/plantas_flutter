@@ -75,7 +75,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 var width = MediaQuery.of(context).size.width;
 
                 return SizedBox(
-                    height: height - 300,
+                    height: height - (height * 0.50),
                     width: width - 50,
                     child: Column(
                       children: [
