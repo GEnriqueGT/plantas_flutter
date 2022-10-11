@@ -9,7 +9,7 @@ class DetailsPage extends StatefulWidget {
   final List<Widget> listTiles;
 
   final String mallName;
-  DetailsPage({Key? key, required this.listTiles, required this.mallName})
+  const DetailsPage({Key? key, required this.listTiles, required this.mallName})
       : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class DetailsPage extends StatefulWidget {
 }
 
 class TileOption extends StatefulWidget {
-  TileOption({Key? key}) : super(key: key);
+  const TileOption({Key? key}) : super(key: key);
 
   @override
   _TileOptionState createState() => _TileOptionState();
@@ -54,7 +54,7 @@ class _DetailsPageState extends State<DetailsPage> {
         sectionRowFilter(context),
         activeFilters(context),
         chartList(),
-        SizedBox(
+        const SizedBox(
           height: 50,
         )
       ]),
@@ -91,9 +91,9 @@ class _DetailsPageState extends State<DetailsPage> {
                   })),
             );
           },
-          child: IconTheme(
+          backgroundColor: const Color(0xffD6DD58),
+          child: const IconTheme(
               data: IconThemeData(color: Colors.black), child: Icon(Icons.add)),
-          backgroundColor: Color(0xffD6DD58),
         ),
       ),
     );
@@ -104,6 +104,9 @@ class _DetailsPageState extends State<DetailsPage> {
       padding: const EdgeInsets.only(right: 8.0),
       child: Container(
         height: 35,
+        decoration: BoxDecoration(
+            color: const Color.fromARGB(39, 214, 221, 88),
+            borderRadius: BorderRadius.circular(30)),
         child: Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15),
           child: Row(
@@ -114,21 +117,21 @@ class _DetailsPageState extends State<DetailsPage> {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Text(
                   text,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       color: Color(0xff9AA121)),
                 ),
               ),
               IconButton(
-                  constraints: BoxConstraints(),
+                  constraints: const BoxConstraints(),
                   padding: EdgeInsets.zero,
                   onPressed: () {
                     setState(() {
                       changeState(index);
                     });
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.close,
                     color: Color(0xff9AA121),
                     size: 20,
@@ -136,9 +139,6 @@ class _DetailsPageState extends State<DetailsPage> {
             ],
           ),
         ),
-        decoration: BoxDecoration(
-            color: Color.fromARGB(39, 214, 221, 88),
-            borderRadius: BorderRadius.circular(30)),
       ),
     );
   }
@@ -146,22 +146,22 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget chartList() {
     return Column(
       children: [
-        (qState) ? chartQ() : SizedBox(),
-        (phState) ? chartpH() : SizedBox(),
-        (sslmState) ? chartSslm() : SizedBox(),
-        (ssedState) ? chartSsed() : SizedBox(),
-        (odState) ? chartOd() : SizedBox(),
-        (ntState) ? chartNt() : SizedBox(),
-        (ptState) ? chartPt() : SizedBox(),
-        (dboState) ? chartsDBO() : SizedBox(),
-        (ssState) ? chartsSS() : SizedBox(),
+        (qState) ? chartQ() : const SizedBox(),
+        (phState) ? chartpH() : const SizedBox(),
+        (sslmState) ? chartSslm() : const SizedBox(),
+        (ssedState) ? chartSsed() : const SizedBox(),
+        (odState) ? chartOd() : const SizedBox(),
+        (ntState) ? chartNt() : const SizedBox(),
+        (ptState) ? chartPt() : const SizedBox(),
+        (dboState) ? chartsDBO() : const SizedBox(),
+        (ssState) ? chartsSS() : const SizedBox(),
       ],
     );
   }
 
   Widget sectionRowFilter(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 40),
+      padding: const EdgeInsets.only(top: 40),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -176,9 +176,15 @@ class _DetailsPageState extends State<DetailsPage> {
 
                 setState(() {});
               },
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  elevation: 0,
+                  primary: const Color(0xffF5F5F5)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: const [
                   Text(
                     "Filtrar",
                     style: TextStyle(
@@ -193,12 +199,6 @@ class _DetailsPageState extends State<DetailsPage> {
                   )
                 ],
               ),
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  ),
-                  elevation: 0,
-                  primary: Color(0xffF5F5F5)),
             ),
           )
         ],
@@ -210,8 +210,8 @@ class _DetailsPageState extends State<DetailsPage> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20),
+        const Padding(
+          padding: EdgeInsets.only(left: 20.0, right: 20),
           child: Text(
             "Filtros activos",
             style: TextStyle(
@@ -221,7 +221,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 fontWeight: FontWeight.w700),
           ),
         ),
-        Container(
+        SizedBox(
           height: 40,
           width: MediaQuery.of(context).size.width - 155,
           child: ListView(
@@ -231,15 +231,15 @@ class _DetailsPageState extends State<DetailsPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  (qState) ? activeFilter("Q EN ENTRADA", 1) : SizedBox(),
-                  (phState) ? activeFilter("pH EN SALIDA", 2) : SizedBox(),
-                  (sslmState) ? activeFilter("SSLM EN SALIDA", 3) : SizedBox(),
-                  (ssedState) ? activeFilter("SSED EN ENTRADA", 4) : SizedBox(),
-                  (odState) ? activeFilter("OD EN SALIDA", 5) : SizedBox(),
-                  (ntState) ? activeFilter("NT EN SALIDA", 6) : SizedBox(),
-                  (ptState) ? activeFilter("PT EN SALIDA", 7) : SizedBox(),
-                  (dboState) ? activeFilter("DBO EN SALIDA", 8) : SizedBox(),
-                  (ssState) ? activeFilter("SS EN SALIDA", 9) : SizedBox(),
+                  (qState) ? activeFilter("Q EN ENTRADA", 1) : const SizedBox(),
+                  (phState) ? activeFilter("pH EN SALIDA", 2) : const SizedBox(),
+                  (sslmState) ? activeFilter("SSLM EN SALIDA", 3) : const SizedBox(),
+                  (ssedState) ? activeFilter("SSED EN ENTRADA", 4) : const SizedBox(),
+                  (odState) ? activeFilter("OD EN SALIDA", 5) : const SizedBox(),
+                  (ntState) ? activeFilter("NT EN SALIDA", 6) : const SizedBox(),
+                  (ptState) ? activeFilter("PT EN SALIDA", 7) : const SizedBox(),
+                  (dboState) ? activeFilter("DBO EN SALIDA", 8) : const SizedBox(),
+                  (ssState) ? activeFilter("SS EN SALIDA", 9) : const SizedBox(),
                 ],
               )
             ],
@@ -391,7 +391,7 @@ class _DetailsPageState extends State<DetailsPage> {
           },
           localState: obtener(letras[i]),
           letra: letras[i],
-          colorTile: (i % 2 == 0) ? Color(0xffFBFCEE) : null,
+          colorTile: (i % 2 == 0) ? const Color(0xffFBFCEE) : null,
         ));
       }
 
@@ -404,7 +404,7 @@ class _DetailsPageState extends State<DetailsPage> {
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30.0))),
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
@@ -419,7 +419,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     width: width - 50,
                     child: Column(
                       children: [
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(top: 20),
                           child: Text("Filtros",
                               style: TextStyle(
@@ -429,10 +429,10 @@ class _DetailsPageState extends State<DetailsPage> {
                               )),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 40),
-                          child: Container(
+                          padding: const EdgeInsets.only(top: 40),
+                          child: SizedBox(
                             width: width - 100,
-                            child: Text('Tablas',
+                            child: const Text('Tablas',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 17,
@@ -441,15 +441,15 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                         ),
                         Padding(
-                            padding: EdgeInsets.only(top: 10),
+                            padding: const EdgeInsets.only(top: 10),
                             child: Column(
                               children: obtenerTiles(),
                             )),
                         Padding(
-                          padding: EdgeInsets.only(top: 20),
-                          child: Container(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: SizedBox(
                             width: width - 100,
-                            child: Text('Rango de fecha',
+                            child: const Text('Rango de fecha',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 17,
@@ -458,12 +458,12 @@ class _DetailsPageState extends State<DetailsPage> {
                           ),
                         ),
                         Padding(
-                            padding: EdgeInsets.only(top: 10, bottom: 15),
+                            padding: const EdgeInsets.only(top: 10, bottom: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 fechaInput("Fecha Inicio"),
-                                Icon(
+                                const Icon(
                                   Icons.arrow_forward_rounded,
                                   size: 20,
                                 ),
@@ -492,15 +492,15 @@ class _DetailsPageState extends State<DetailsPage> {
                                 primary: const Color(
                                   0xffD6DD58,
                                 )),
-                            child: Container(
+                            child: SizedBox(
                               width: width - 120,
-                              child: Center(
+                              child: const Center(
                                 child: Text("Aplicar filtros",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16,
                                         fontFamily: 'Poppins',
-                                        color: const Color(0xff414141))),
+                                        color: Color(0xff414141))),
                               ),
                             ))
                       ],
@@ -543,11 +543,11 @@ appBarLogo(BuildContext context) {
                     );
                   },
                   pageBuilder: ((context, animation, secondaryAnimation) {
-                    return MallsPage();
+                    return const MallsPage();
                   })),
             );
           },
-          icon: Icon(Icons.arrow_back)),
+          icon: const Icon(Icons.arrow_back)),
       backgroundColor: const Color(0xff414141),
       elevation: 0.0,
       title: Image.asset(
@@ -563,21 +563,21 @@ getTiles(List<Widget> listTiles, BuildContext context) {
 
   for (int i = 0; i < listTiles.length - 1; i++) {
     listTilesNew.add(Container(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 0), child: listTiles[i]));
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0), child: listTiles[i]));
   }
 
   return listTilesNew;
 }
 
 detallesCards() {
-  return Container(
+  return SizedBox(
     height: 200,
     child: ListView(
       scrollDirection: Axis.horizontal,
       children: [
         Container(
           width: 340,
-          margin: EdgeInsets.only(left: 20),
+          margin: const EdgeInsets.only(left: 20),
           child: Card(
             elevation: 16,
             color: Colors.white,
@@ -586,13 +586,13 @@ detallesCards() {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Image.asset("assets/images/aeration.png", scale: 1.7),
-                Text("AERATION",
+                const Text("AERATION",
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 17,
                       fontFamily: 'Poppins',
                     )),
-                Text("SS = 250 g/L",
+                const Text("SS = 250 g/L",
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 12,
@@ -604,7 +604,7 @@ detallesCards() {
         ),
         Container(
           width: 340,
-          margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+          margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: Card(
             elevation: 16,
             color: Colors.white,
@@ -613,7 +613,7 @@ detallesCards() {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Image.asset("assets/images/influent.png", scale: 1.7),
-                Text("INFLUENT",
+                const Text("INFLUENT",
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 17,
@@ -621,7 +621,7 @@ detallesCards() {
                     )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
+                  children: const [
                     Text("Q = 90 L/min",
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
@@ -653,27 +653,27 @@ detallesCards() {
 
 plantaText(BuildContext context, String mallName) {
   return Container(
-    padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
-    decoration: BoxDecoration(
+    padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+    decoration: const BoxDecoration(
       border: Border(
         bottom: BorderSide(color: Color(0xffD7D7D7)),
       ),
     ),
     child: Theme(
       data: Theme.of(context)
-          .copyWith(dividerColor: Color.fromARGB(0, 158, 158, 158)),
+          .copyWith(dividerColor: const Color.fromARGB(0, 158, 158, 158)),
       child: ExpansionTile(
-        iconColor: Color(0xff9F9F9F),
+        iconColor: const Color(0xff9F9F9F),
         title: Text(
           "C.C. $mallName",
-          style: TextStyle(
+          style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 21,
               fontFamily: 'Poppins',
               color: Colors.black),
         ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 5.0),
+        subtitle: const Padding(
+          padding: EdgeInsets.only(top: 5.0),
           child: Text("Planta de Tratamiento 1",
               style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -689,8 +689,8 @@ plantaText(BuildContext context, String mallName) {
 sectionText(String texto) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(20, 20, 0, 15),
-    child: Text("$texto",
-        style: TextStyle(
+    child: Text(texto,
+        style: const TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 20,
           fontFamily: 'Poppins',
@@ -701,7 +701,7 @@ sectionText(String texto) {
 chartsectionText(String texto, Color color) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(20, 20, 0, 50),
-    child: Text("$texto",
+    child: Text(texto,
         style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 20,
@@ -783,17 +783,17 @@ Widget chart(Color lineColor, Color dotColor) {
                       end: Alignment.bottomCenter,
                       colors: [
                         lineColor.withAlpha(65),
-                        Color.fromARGB(0, 255, 255, 255)
+                        const Color.fromARGB(0, 255, 255, 255)
                       ])),
               spots: [
-                FlSpot(0, 250),
-                FlSpot(3, 200),
-                FlSpot(5, 150),
-                FlSpot(10, 245),
-                FlSpot(12, 170),
-                FlSpot(13, 200),
-                FlSpot(15.5, 250),
-                FlSpot(18, 150)
+                const FlSpot(0, 250),
+                const FlSpot(3, 200),
+                const FlSpot(5, 150),
+                const FlSpot(10, 245),
+                const FlSpot(12, 170),
+                const FlSpot(13, 200),
+                const FlSpot(15.5, 250),
+                const FlSpot(18, 150)
               ]),
         ],
       ),
@@ -809,10 +809,10 @@ Widget fechaInput(String texto) {
     height: 40,
     child: TextFormField(
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: 20.0, bottom: 5),
+          contentPadding: const EdgeInsets.only(left: 20.0, bottom: 5),
           border: InputBorder.none,
           hintText: texto),
-      style: TextStyle(
+      style: const TextStyle(
           fontWeight: FontWeight.w400, fontSize: 12, fontFamily: 'Poppins'),
     ),
   );
@@ -822,8 +822,8 @@ Widget chartQ() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      chartsectionText("Caudal entrada Q", Color(0xffA6AE23)),
-      chart(Color(0xffD6DD58), Color(0xffA6AE23)),
+      chartsectionText("Caudal entrada Q", const Color(0xffA6AE23)),
+      chart(const Color(0xffD6DD58), const Color(0xffA6AE23)),
     ],
   );
 }
@@ -832,9 +832,9 @@ Widget chartpH() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      chartsectionText("pH EN SALIDA", Color.fromARGB(255, 174, 35, 169)),
+      chartsectionText("pH EN SALIDA", const Color.fromARGB(255, 174, 35, 169)),
       chart(
-          Color.fromARGB(255, 208, 88, 221), Color.fromARGB(255, 160, 35, 174)),
+          const Color.fromARGB(255, 208, 88, 221), const Color.fromARGB(255, 160, 35, 174)),
     ],
   );
 }
@@ -843,8 +843,8 @@ Widget chartSslm() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      chartsectionText("SSLM EN SALIDA", Color.fromARGB(255, 174, 35, 35)),
-      chart(Color.fromARGB(255, 221, 88, 88), Color.fromARGB(255, 174, 35, 35)),
+      chartsectionText("SSLM EN SALIDA", const Color.fromARGB(255, 174, 35, 35)),
+      chart(const Color.fromARGB(255, 221, 88, 88), const Color.fromARGB(255, 174, 35, 35)),
     ],
   );
 }
@@ -853,9 +853,9 @@ Widget chartSsed() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      chartsectionText("SSED EN ENTRADA", Color.fromARGB(255, 40, 174, 35)),
+      chartsectionText("SSED EN ENTRADA", const Color.fromARGB(255, 40, 174, 35)),
       chart(
-          Color.fromARGB(255, 88, 221, 112), Color.fromARGB(255, 35, 174, 60)),
+          const Color.fromARGB(255, 88, 221, 112), const Color.fromARGB(255, 35, 174, 60)),
     ],
   );
 }
@@ -864,9 +864,9 @@ Widget chartOd() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      chartsectionText("OD EN SALIDA", Color.fromARGB(255, 174, 81, 35)),
+      chartsectionText("OD EN SALIDA", const Color.fromARGB(255, 174, 81, 35)),
       chart(
-          Color.fromARGB(255, 221, 130, 88), Color.fromARGB(255, 174, 95, 35)),
+          const Color.fromARGB(255, 221, 130, 88), const Color.fromARGB(255, 174, 95, 35)),
     ],
   );
 }
@@ -875,8 +875,8 @@ Widget chartNt() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      chartsectionText("NT EN SALIDA", Color(0xff247FB2)),
-      chart(Color(0xff58ADDD), Color(0xff247FB2)),
+      chartsectionText("NT EN SALIDA", const Color(0xff247FB2)),
+      chart(const Color(0xff58ADDD), const Color(0xff247FB2)),
     ],
   );
 }
@@ -885,9 +885,9 @@ Widget chartPt() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      chartsectionText("PT EN SALIDA", Color.fromARGB(255, 140, 36, 178)),
+      chartsectionText("PT EN SALIDA", const Color.fromARGB(255, 140, 36, 178)),
       chart(
-          Color.fromARGB(255, 183, 88, 221), Color.fromARGB(255, 147, 36, 178)),
+          const Color.fromARGB(255, 183, 88, 221), const Color.fromARGB(255, 147, 36, 178)),
     ],
   );
 }
@@ -896,8 +896,8 @@ Widget chartsSS() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      chartsectionText("SS EN SALIDA", Color(0xff6B24B2)),
-      chart(Color(0xffB584E6), Color(0xff6B24B2)),
+      chartsectionText("SS EN SALIDA", const Color(0xff6B24B2)),
+      chart(const Color(0xffB584E6), const Color(0xff6B24B2)),
     ],
   );
 }
@@ -906,8 +906,8 @@ Widget chartsDBO() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      chartsectionText("DBO EN SALIDA", Color(0xff23AEA6)),
-      chart(Color(0xff62DFD8), Color(0xff23AEA6)),
+      chartsectionText("DBO EN SALIDA", const Color(0xff23AEA6)),
+      chart(const Color(0xff62DFD8), const Color(0xff23AEA6)),
     ],
   );
 }
@@ -937,16 +937,16 @@ class OptionTileState extends State<OptionTile> {
       child: ListTile(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         dense: true,
-        visualDensity: VisualDensity(vertical: -3),
+        visualDensity: const VisualDensity(vertical: -3),
         title: Text(widget.letra,
             style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 fontFamily: 'Poppins',
                 fontSize: 15)),
-        trailing: Container(
+        trailing: SizedBox(
           width: 20,
           child: Checkbox(
-              activeColor: Color(0xff9AA121),
+              activeColor: const Color(0xff9AA121),
               value: widget.localState,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6)),
